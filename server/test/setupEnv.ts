@@ -25,13 +25,9 @@ if (!testDatabase || !testDatabase.endsWith('_test')) {
 
 const testHost = (process.env.POSTGRES_HOST || 'localhost').trim().toLowerCase();
 const isLoopbackHost = testHost === 'localhost' || testHost === '127.0.0.1' || testHost === '::1';
-// GitHub Actions service containers are reached through their service name.
-// Keep this exception limited to the hosted Actions environment and exact
-// service name used by .github/workflows/ci.yml.
-const isGitHubActionsPostgres = process.env.GITHUB_ACTIONS === 'true' && testHost === 'postgres';
-if (!isLoopbackHost && !isGitHubActionsPostgres) {
+if (!isLoopbackHost) {
     throw new Error(
-        `Refusing to run tests against PostgreSQL host "${testHost}". Use localhost/loopback, or the "postgres" GitHub Actions service.`
+        `Refusing to run tests against PostgreSQL host "${testHost}". Only localhost/loopback addresses are allowed.`
     );
 }
 
@@ -39,3 +35,8 @@ const testPort = Number(process.env.POSTGRES_PORT);
 if (!Number.isInteger(testPort) || testPort < 1 || testPort > 65535) {
     throw new Error('Refusing to run tests: POSTGRES_PORT must be an integer between 1 and 65535.');
 }
+
+// Use the validated, normalized values for the pool as well as for the checks.
+process.env.POSTGRES_HOST = testHost;
+process.env.POSTGRES_PORT = String(testPort);
+process.env.POSTGRES_DB = testDatabase;
