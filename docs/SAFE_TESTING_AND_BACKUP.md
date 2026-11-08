@@ -22,9 +22,10 @@ cd server
 POSTGRES_HOST=127.0.0.1 POSTGRES_PORT=55432 POSTGRES_DB=openfamily_test POSTGRES_USER=openfamily POSTGRES_PASSWORD=openfamily npm test
 ```
 
-The test setup rejects database names without the `_test` suffix, non-loopback
-hosts, and invalid ports. GitHub Actions has one narrowly scoped exception:
-the `postgres` service hostname is accepted only when `GITHUB_ACTIONS=true`.
+The test setup rejects database names without the `_test` suffix, every
+non-loopback host, and invalid ports. The GitHub Actions workflow maps its
+PostgreSQL service to the runner's loopback interface, so CI uses the same
+loopback-only rule.
 
 When finished, remove the disposable test container:
 
