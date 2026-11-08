@@ -15,7 +15,27 @@ process.env.LOG_LEVEL = 'error';
 // session far from UTC makes any mix-up between local and UTC times fail loudly.
 process.env.PGOPTIONS ??= '-c timezone=Pacific/Kiritimati';
 
-// The suites empty every table between tests: never let them near real data.
-if (!process.env.POSTGRES_DB.endsWith('_test')) {
-    throw new Error(`Refusing to run tests against database "${process.env.POSTGRES_DB}": its name must end with _test.`);
+// Test suites reset tables between cases. Validate the destination before any
+// application/database module is imported so a misconfigured test cannot reach
+// a production or otherwise remote PostgreSQL server.
+const testDatabase = process.env.POSTGRES_DB.trim();
+if (!testDatabase || !testDatabase.endsWith('_test')) {
+    throw new Error('Refusing to run tests: POSTGRES_DB must be a non-empty name ending in "_test".');
+}
+
+const testHost = (process.env.POSTGRES_HOST || 'localhost').trim().toLowerCase();
+const isLoopbackHost = testHost === 'localhost' || testHost === '127.0.0.1' || testHost === '::1';
+// GitHub Actions service containers are reached through their service name.
+// Keep this exception limited to the hosted Actions environment and exact
+// service name used by .github/workflows/ci.yml.
+const isGitHubActionsPostgres = process.env.GITHUB_ACTIONS === 'true' && testHost === 'postgres';
+if (!isLoopbackHost && !isGitHubActionsPostgres) {
+    throw new Error(
+        `Refusing to run tests against PostgreSQL host "${testHost}". Use localhost/loopback, or the "postgres" GitHub Actions service.`
+    );
+}
+
+const testPort = Number(process.env.POSTGRES_PORT);
+if (!Number.isInteger(testPort) || testPort < 1 || testPort > 65535) {
+    throw new Error('Refusing to run tests: POSTGRES_PORT must be an integer between 1 and 65535.');
 }
