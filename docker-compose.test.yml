@@ -1,0 +1,22 @@
+# Isolated, disposable PostgreSQL for server tests.
+# The database directory is tmpfs: removing this test container removes its data.
+name: openfamily-test
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: openfamily-test-db
+    restart: "no"
+    environment:
+      POSTGRES_DB: openfamily_test
+      POSTGRES_USER: openfamily
+      POSTGRES_PASSWORD: openfamily
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openfamily -d openfamily_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
