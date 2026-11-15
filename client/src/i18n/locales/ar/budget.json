@@ -1,0 +1,143 @@
+{
+  "loading": "جارٍ تحميل الميزانية…",
+  "categories": {
+    "Logement": "السكن",
+    "Alimentation": "المواد الغذائية",
+    "Transport": "المواصلات",
+    "Santé": "الصحة",
+    "Loisirs": "الترفيه",
+    "Abonnements": "الاشتراكات",
+    "Assurance": "التأمين",
+    "Enfants": "الأطفال",
+    "Maison": "المنزل",
+    "Autre": "أخرى",
+    "Prélèvements": "الخصومات الدورية"
+  },
+  "readOnly": "وضع القراءة فقط. يمكن للوالدين فقط تعديل الميزانية.",
+  "alerts": {
+    "title": "تم بلوغ الحدود",
+    "over": " · تم التجاوز",
+    "warn": " (٨٠٪ أو أكثر)"
+  },
+  "balance": {
+    "current": "الرصيد الحالي",
+    "pointed_zero": "لم تتم تسوية أي بند متكرر",
+    "pointed_one": "تمت تسوية بند متكرر واحد",
+    "pointed_two": "تمت تسوية بندين متكررين",
+    "pointed_few": "تمت تسوية {{count}} بنود متكررة",
+    "pointed_many": "تمت تسوية {{count}} بندًا متكررًا",
+    "pointed_other": "تمت تسوية {{count}} بند متكرر",
+    "expenses_zero": "لا توجد مصروفات",
+    "expenses_one": "مصروف واحد",
+    "expenses_two": "مصروفان",
+    "expenses_few": "{{count}} مصروفات",
+    "expenses_many": "{{count}} مصروفًا",
+    "expenses_other": "{{count}} مصروف",
+    "opening": "الرصيد الافتتاحي: {{amount}}"
+  },
+  "forecast": {
+    "title": "التوقعات",
+    "subtitle": "البنود الدورية القادمة: +{{income}} دخل · -{{expenses}} مصروفات"
+  },
+  "analytics": "التحليلات والحدود",
+  "charts": {
+    "expensesByCategory": "المصروفات حسب التصنيف",
+    "noExpenses": "لا توجد مصروفات هذا الشهر",
+    "yearEvolution": "التغير السنوي",
+    "income": "الدخل",
+    "expenses": "المصروفات"
+  },
+  "limits": {
+    "title": "الحدود الشهرية",
+    "subtitle": "متابعة الإنفاق حسب التصنيف",
+    "define": "تحديد",
+    "none": "لم يتم تحديد حد"
+  },
+  "sections": {
+    "recurring": "القيود الدورية",
+    "expenses": "المصروفات",
+    "income": "الدخل"
+  },
+  "recurring": {
+    "empty": "لا توجد قيود دورية هذا الشهر",
+    "markOn": "تحديد كمُسوّى",
+    "markOff": "إلغاء التحديد",
+    "dayPrefix": "يوم",
+    "frequency": {
+      "daily": "يوميًا",
+      "weekly": "أسبوعيًا",
+      "monthly": "شهريًا",
+      "yearly": "سنويًا",
+      "none": "بدون تكرار"
+    },
+    "units": {
+      "daily_zero": "أيام",
+      "daily_one": "يوم",
+      "daily_two": "يومان",
+      "daily_few": "{{count}} أيام",
+      "daily_many": "{{count}} يومًا",
+      "daily_other": "{{count}} يوم",
+      "weekly_zero": "أسابيع",
+      "weekly_one": "أسبوع",
+      "weekly_two": "أسبوعان",
+      "weekly_few": "{{count}} أسابيع",
+      "weekly_many": "{{count}} أسبوعًا",
+      "weekly_other": "{{count}} أسبوع",
+      "monthly_zero": "أشهر",
+      "monthly_one": "شهر",
+      "monthly_two": "شهران",
+      "monthly_few": "{{count}} أشهر",
+      "monthly_many": "{{count}} شهرًا",
+      "monthly_other": "{{count}} شهر",
+      "yearly_zero": "سنوات",
+      "yearly_one": "سنة",
+      "yearly_two": "سنتان",
+      "yearly_few": "{{count}} سنوات",
+      "yearly_many": "{{count}} سنة",
+      "yearly_other": "{{count}} سنة"
+    }
+  },
+  "empty": {
+    "expenses": "لا توجد مصروفات هذا الشهر",
+    "income": "لا توجد إيرادات هذا الشهر"
+  },
+  "sheets": {
+    "new": "إضافة قيد",
+    "edit": "تعديل القيد",
+    "limit": "الحد الشهري"
+  },
+  "toggle": {
+    "expense": "مصروف",
+    "income": "دخل"
+  },
+  "fields": {
+    "amount": "المبلغ ({{currency}})",
+    "description": "الوصف (اختياري)",
+    "descriptionPlaceholder": "مثال: مشتريات غذائية، راتب، إيداع استثماري…",
+    "date": "التاريخ",
+    "category": "التصنيف",
+    "limit": "الحد الشهري ({{currency}})",
+    "limitHint": "أدخل 0 لإلغاء تتبع هذا التصنيف.",
+    "startDate": "تاريخ البدء",
+    "repeat": "التكرار",
+    "every": "كل",
+    "repeatUntil": "تكرار حتى (اختياري)",
+    "addToCalendar": "إضافة إلى التقويم",
+    "addToCalendarHint": "ينشئ حدثًا طوال اليوم في التقويم بالتاريخ والتكرار نفسيهما.",
+    "type": "النوع"
+  },
+  "errors": {
+    "amountInvalid": "المبلغ غير صالح.",
+    "save": "حدث خطأ أثناء الحفظ.",
+    "limitInvalid": "الحد غير صالح.",
+    "startDateRequired": "تاريخ البدء مطلوب.",
+    "intervalInvalid": "يجب أن تكون فترة التكرار بين 1 و365.",
+    "repeatUntilInvalid": "لا يمكن أن يكون تاريخ انتهاء التكرار قبل تاريخ البدء.",
+    "editRecurrenceType": "للتبديل بين قيد لمرة واحدة وقيد متكرر، احذف هذا القيد ثم أضفه من جديد."
+  },
+  "confirm": {
+    "deleteRecurring": "هل تريد حذف هذا القيد المتكرر؟",
+    "deleteEntry": "هل تريد حذف هذا القيد؟"
+  },
+  "classic": "كلاسيكي"
+}
