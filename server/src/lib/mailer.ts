@@ -51,6 +51,9 @@ const getTransporter = (): Transporter => {
 
 const normalizeLanguage = (language?: string | null): Language => {
     const primary = language?.trim().toLowerCase().split(/[-_]/)[0];
+    // Arabic email templates are not translated yet; keep the actual email
+    // language metadata aligned with the French fallback copy.
+    if (primary === 'ar') return 'fr';
     return isLanguage(primary) ? primary : 'fr';
 };
 
