@@ -1,0 +1,33 @@
+{
+  "mode": {
+    "classic": "الكلاسيكي",
+    "kakeibo": "كاكيبو"
+  },
+  "availableTitle": "المبلغ المتاح للإنفاق",
+  "availableSub": "الدخل {{income}} − هدف الادخار {{goal}}",
+  "spentSoFar": "المصروف: {{amount}}",
+  "householdIncome": "دخل الأسرة",
+  "extraIncome": "دخل إضافي هذا الشهر",
+  "totalIncome": "إجمالي الدخل",
+  "savingsGoal": "هدف الادخار",
+  "pillarsTitle": "أين تذهب الأموال؟",
+  "pillars": {
+    "survival": "الأساسيات",
+    "wants": "الرغبات",
+    "culture": "الثقافة والتطوير",
+    "extra": "إضافات"
+  },
+  "pillarHint": {
+    "survival": "الاحتياجات",
+    "wants": "المتعة",
+    "culture": "تطوير الذات",
+    "extra": "المصروفات غير المتوقعة"
+  },
+  "noExpenses": "لم تُسجّل أي مصروفات هذا الشهر.",
+  "reviewTitle": "مراجعة نهاية الشهر",
+  "actualSavings": "المدخر فعلياً",
+  "goalReached": "تم تحقيق الهدف — بفارق {{amount}} عن المستهدف!",
+  "goalMissed": "ينقصك {{amount}} لتحقيق هدفك.",
+  "notesLabel": "ملاحظات وتقييم",
+  "notesPlaceholder": "ما الذي سار جيداً؟ وما الذي يمكن تحسينه الشهر القادم؟"
+}
