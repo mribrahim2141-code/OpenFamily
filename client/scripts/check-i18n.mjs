@@ -144,7 +144,14 @@ for (const language of languages) {
 
     for (const namespace of canonicalNamespaces) {
         if (!localeNamespaces.includes(namespace)) {
-            errors.push(`${language}/${namespace}: missing namespace`);
+            // Arabic is being introduced incrementally. Missing Arabic
+            // namespaces intentionally resolve through i18next's English
+            // fallback until their reviewed translations are added.
+            if (language === 'ar') {
+                warnings.push(`${language}/${namespace}: using English fallback until translated`);
+            } else {
+                errors.push(`${language}/${namespace}: missing namespace`);
+            }
         }
     }
 
