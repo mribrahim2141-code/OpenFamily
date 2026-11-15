@@ -1,0 +1,91 @@
+{
+  "loading": "جارٍ تحميل المهام…",
+  "title": "المهام",
+  "subtitle": "إدارة مهام العائلة ومتابعة إنجازها",
+  "newTask": "مهمة جديدة",
+  "priorities": {
+    "Haute": "عالية",
+    "Moyenne": "متوسطة",
+    "Basse": "منخفضة"
+  },
+  "frequencies": {
+    "Une fois": "مرة واحدة",
+    "Quotidien": "يومياً",
+    "Hebdomadaire": "أسبوعياً",
+    "Mensuel": "شهرياً",
+    "Trimestriel": "كل ثلاثة أشهر",
+    "Quadrimestriel": "كل أربعة أشهر",
+    "Annuel": "سنوياً"
+  },
+  "stats": {
+    "total": "الإجمالي",
+    "completed": "مكتملة",
+    "pending": "معلقة",
+    "completionRate": "معدل الإنجاز"
+  },
+  "filters": {
+    "label": "عوامل التصفية:",
+    "statusAll": "الكل",
+    "statusPending": "معلقة",
+    "statusCompleted": "مكتملة",
+    "allPriorities": "جميع الأولويات",
+    "allMembers": "جميع الأفراد",
+    "unassigned": "غير مسندة",
+    "allFrequencies": "جميع التكرارات",
+    "allCategories": "جميع التصنيفات",
+    "noCategory": "بلا تصنيف"
+  },
+  "empty": {
+    "none": "لا توجد مهام بعد. أنشئ أول مهمة!",
+    "noMatch": "لا توجد مهام تطابق عوامل التصفية المحددة."
+  },
+  "due": "تاريخ الاستحقاق: {{date}}",
+  "dialog": {
+    "editTitle": "تعديل مهمة",
+    "createTitle": "مهمة جديدة",
+    "description": "أدخل تفاصيل المهمة"
+  },
+  "form": {
+    "title": "العنوان",
+    "titlePlaceholder": "مثال: شراء مستلزمات المنزل",
+    "description": "الوصف (اختياري)",
+    "descriptionPlaceholder": "تفاصيل إضافية…",
+    "priority": "الأولوية",
+    "frequency": "التكرار",
+    "dueDate": "تاريخ الاستحقاق (اختياري)",
+    "assignTo": "إسناد إلى (اختياري)",
+    "noMembers": "لا يوجد أفراد متاحون",
+    "points": "النقاط المكتسبة (اختياري)",
+    "pointsHint": "يحصل الأفراد المسندة إليهم المهمة على هذه النقاط عند إكمالها.",
+    "category": "التصنيف (اختياري)",
+    "noCategory": "بلا تصنيف"
+  },
+  "approval": {
+    "pendingBadge": "بانتظار الموافقة",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "toastTitle": "أحسنت! أتممت المهمة.",
+    "toastDescription": "ستُضاف نقاطك بعد موافقة أحد الوالدين."
+  },
+  "confirmDelete": "هل أنت متأكد من حذف هذه المهمة؟",
+  "errors": {
+    "loadTasks": "تعذّر تحميل المهام.",
+    "loadMembers": "تعذّر تحميل الأفراد.",
+    "loadStats": "تعذّر تحميل الإحصاءات.",
+    "saveTask": "تعذّر حفظ هذه المهمة.",
+    "toggleTask": "تعذّر تحديث هذه المهمة.",
+    "deleteTask": "تعذّر حذف هذه المهمة.",
+    "approveTask": "تعذّرت الموافقة على هذه المهمة.",
+    "rejectTask": "تعذّر رفض هذه المهمة."
+  },
+  "categories": {
+    "Cuisine": "المطبخ",
+    "Chambre": "غرفة النوم",
+    "Salle de bain": "الحمام",
+    "Salon": "غرفة المعيشة",
+    "Extérieur": "الخارج",
+    "École": "المدرسة",
+    "Administratif": "المعاملات الإدارية",
+    "Autre": "أخرى"
+  }
+}
