@@ -3,10 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { CONFIGURED_LANGUAGE_ORDER } from './languages';
 
-// Auto-import every locale file: ./locales/<lng>/<namespace>.json
-// Dropping a new JSON file in that folder is enough — no manual wiring needed.
 const modules = import.meta.glob('./locales/*/*.json', { eager: true });
-
 type NamespaceBundle = Record<string, unknown>;
 const resources: Record<string, Record<string, NamespaceBundle>> = {};
 
@@ -19,19 +16,22 @@ for (const filePath in modules) {
     resources[lng][ns] = mod.default;
 }
 
-// Languages are discovered from the locale folders themselves: to add a new
-// language, just drop a `locales/<lng>/` folder of JSON files — it appears in
-// the switcher automatically. Configured languages are listed first in config
-// order, followed by unconfigured locale folders A→Z.
 const discovered = Object.keys(resources);
 export const SUPPORTED_LANGUAGES: string[] = [
     ...CONFIGURED_LANGUAGE_ORDER.filter((l) => discovered.includes(l)),
     ...discovered.filter((l) => !CONFIGURED_LANGUAGE_ORDER.includes(l)).sort(),
 ];
 
-const namespaces = Array.from(
-    new Set(Object.values(resources).flatMap((r) => Object.keys(r)))
-);
+const namespaces = Array.from(new Set(Object.values(resources).flatMap((r) => Object.keys(r))));
+
+const syncDocumentLanguage = (language?: string) => {
+    const lng = (language || i18n.resolvedLanguage || i18n.language || 'en').split('-')[0];
+    const isRtl = lng === 'ar' || lng === 'fa' || lng === 'ur' || lng === 'he';
+    if (typeof document !== 'undefined') {
+        document.documentElement.lang = lng;
+        document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+    }
+};
 
 void i18n
     .use(LanguageDetector)
@@ -39,7 +39,6 @@ void i18n
     .init({
         resources,
         supportedLngs: SUPPORTED_LANGUAGES.length ? SUPPORTED_LANGUAGES : ['en'],
-        // English is the default for any browser that is not French.
         fallbackLng: 'en',
         load: 'languageOnly',
         nonExplicitSupportedLngs: true,
@@ -54,20 +53,11 @@ void i18n
         returnNull: false,
         saveMissing: import.meta.env.DEV,
         missingKeyHandler: (_lngs: readonly string[], ns: string, key: string) => {
-            if (import.meta.env.DEV) {
-                console.warn(`[i18n] missing key: ${ns}:${key}`);
-            }
+            if (import.meta.env.DEV) console.warn(`[i18n] missing key: ${ns}:${key}`);
         },
-    });
+    })
+    .then(() => syncDocumentLanguage());
 
-// index.html ships a hard-coded <html lang>, which would stay wrong for every
-// other language — screen readers announce the page in it and search engines
-// use it. Keep it in sync with the language actually rendered.
-const syncDocumentLang = () => {
-    const lng = (i18n.resolvedLanguage || i18n.language || 'en').split('-')[0];
-    if (typeof document !== 'undefined') document.documentElement.lang = lng;
-};
-i18n.on('languageChanged', syncDocumentLang);
-syncDocumentLang();
+i18n.on('languageChanged', syncDocumentLanguage);
 
 export default i18n;

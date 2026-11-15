@@ -1,0 +1,98 @@
+{
+  "loading": "جارٍ تحميل المصروف الشخصي…",
+  "title": "المصروف الشخصي",
+  "subtitle": "إنجاز المهام يكسب نقاطًا، والنقاط تتحول إلى مصروف",
+  "empty": "لا توجد مكافآت بعد. أضف نجومًا إلى إحدى المهام للبدء!",
+  "streak_zero": "لا أيام متتالية",
+  "streak_one": "يوم واحد متتالٍ",
+  "streak_two": "يومان متتاليان",
+  "streak_few": "{{count}} أيام متتالية",
+  "streak_many": "{{count}} يومًا متتاليًا",
+  "streak_other": "{{count}} يوم متتالٍ",
+  "pendingCount_zero": "لا توجد مهام معلّقة",
+  "pendingCount_one": "مهمة واحدة معلّقة",
+  "pendingCount_two": "مهمتان معلّقتان",
+  "pendingCount_few": "{{count}} مهام معلّقة",
+  "pendingCount_many": "{{count}} مهمة معلّقة",
+  "pendingCount_other": "{{count}} مهمة معلّقة",
+  "worth": "بقيمة {{amount}}",
+  "approvals": {
+    "title_zero": "لا توجد مهام للموافقة",
+    "title_one": "مهمة واحدة بانتظار الموافقة",
+    "title_two": "مهمتان بانتظار الموافقة",
+    "title_few": "{{count}} مهام بانتظار الموافقة",
+    "title_many": "{{count}} مهمة بانتظار الموافقة",
+    "title_other": "{{count}} مهمة بانتظار الموافقة",
+    "approve": "موافقة",
+    "reject": "رفض"
+  },
+  "actions": {
+    "adjust": "تعديل",
+    "redeem": "صرف"
+  },
+  "types": {
+    "earn": "نقاط مكتسبة",
+    "adjust": "تسوية",
+    "redeem": "مصروف تم صرفه"
+  },
+  "fields": {
+    "note": "ملاحظة (اختياري)"
+  },
+  "adjustDialog": {
+    "title": "تعديل نقاط {{name}}",
+    "description": "أضف مكافأة أو اخصم نقاطًا (بقيمة سالبة)",
+    "points": "النقاط (+ أو −)",
+    "notePlaceholder": "مثال: ساعد في ترتيب المشتريات"
+  },
+  "redeemDialog": {
+    "title": "صرف المصروف لـ {{name}}",
+    "description": "الرصيد المتاح: {{balance}} نقطة",
+    "points": "النقاط المراد تحويلها",
+    "amount": "المبلغ المراد صرفه: {{amount}}",
+    "notePlaceholder": "مثال: حصالة، رحلة إلى السينما…"
+  },
+  "goals": {
+    "add": "إضافة هدف",
+    "editTitle": "تعديل الهدف",
+    "progress": "{{current}} / {{target}}",
+    "markAchieved": "تم تحقيق الهدف 🎉"
+  },
+  "goalDialog": {
+    "addTitle": "هدف جديد لـ {{name}}",
+    "editTitle": "تعديل هدف {{name}}",
+    "description": "هدف ادخار يمكن الوصول إليه بالنقاط",
+    "emoji": "رمز تعبيري",
+    "titleLabel": "العنوان",
+    "titlePlaceholder": "مثال: لعبة فيديو",
+    "target": "المبلغ المستهدف ({{currency}})",
+    "delete": "حذف"
+  },
+  "kid": {
+    "hello": "مرحبًا {{name}}!",
+    "subtitle": "هذه حصالتك",
+    "reached": "أحسنت، لقد وصلت إلى هدفك! 🎉",
+    "reachedHint": "اطلب من أحد الوالدين تأكيد تحقيق هدفك.",
+    "missing": "ما زلت بحاجة إلى {{amount}}",
+    "editGoal": "تعديل هدفي",
+    "noGoal": "ليس لديك هدف بعد. اختر حلمًا تريد تحقيقه!",
+    "addGoal": "اختر هدفي",
+    "tasksTitle": "مهامك",
+    "allTasks": "عرض الكل",
+    "tasksEmpty": "لا توجد مهام الآن، أحسنت! 🎉",
+    "pendingBadge": "بانتظار الموافقة",
+    "historyTitle": "أحدث نشاطاتك",
+    "notLinkedTitle": "حصالتك بانتظارك!",
+    "notLinkedMessage": "اطلب من أحد الوالدين ربط حسابك بملفك الشخصي من صفحة العائلة لرؤية نقاطك وأهدافك."
+  },
+  "settings": {
+    "rate": "كل نقطة = {{value}}",
+    "title": "قيمة النقطة الواحدة",
+    "description": "حدد القيمة المالية لكل نقطة",
+    "label": "قيمة النقطة الواحدة",
+    "example": "مثال: {{points}} نقطة = {{amount}}"
+  },
+  "errors": {
+    "load": "تعذّر تحميل المصروف الشخصي.",
+    "action": "تعذّر تنفيذ هذا الإجراء."
+  }
+}

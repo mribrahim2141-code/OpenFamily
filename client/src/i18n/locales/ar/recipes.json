@@ -1,0 +1,146 @@
+{
+  "loading": "جارٍ تحميل الوصفات…",
+  "title": "الوصفات",
+  "subtitle": "مكتبة وصفات عائلتك",
+  "newRecipe": "وصفة جديدة",
+  "categories": {
+    "Entrée": "مقبلات",
+    "Plat": "طبق رئيسي",
+    "Dessert": "حلويات",
+    "Snack": "وجبة خفيفة"
+  },
+  "difficulties": {
+    "Facile": "سهل",
+    "Moyen": "متوسط",
+    "Difficile": "صعب"
+  },
+  "durations": {
+    "under15": "≤ 15 دقيقة",
+    "under30": "≤ 30 دقيقة",
+    "under60": "≤ ساعة واحدة",
+    "over60": "> ساعة واحدة"
+  },
+  "searchPlaceholder": "ابحث عن وصفة…",
+  "allCategories": "كل التصنيفات",
+  "allDifficulties": "كل مستويات الصعوبة",
+  "anyDuration": "أي مدة",
+  "filters": {
+    "toggle": "الفلاتر",
+    "clear": "مسح الفلاتر",
+    "ingredientsPlaceholder": "لديّ… (أدخل مكوّنًا ثم اضغط Enter)",
+    "ingredientsMore": "إضافة مكوّن",
+    "ingredientsHelp": "تُعرض فقط الوصفات التي تحتوي على جميع هذه المكونات.",
+    "removeIngredient": "إزالة {{name}}"
+  },
+  "empty": {
+    "none": "لا توجد وصفات بعد. أنشئ وصفتك الأولى!",
+    "noMatch": "لا توجد وصفة تطابق بحثك."
+  },
+  "card": {
+    "min": "{{n}} دقيقة",
+    "servings_zero": "لا تكفي أي حصة",
+    "servings_one": "حصة واحدة",
+    "servings_two": "حصتان",
+    "servings_few": "{{count}} حصص",
+    "servings_many": "{{count}} حصة",
+    "servings_other": "{{count}} حصة",
+    "view": "عرض"
+  },
+  "dialog": {
+    "editTitle": "تعديل الوصفة",
+    "createTitle": "وصفة جديدة",
+    "description": "أدخل تفاصيل الوصفة"
+  },
+  "form": {
+    "name": "اسم الوصفة",
+    "namePlaceholder": "مثال: فطيرة التفاح",
+    "category": "التصنيف",
+    "difficulty": "مستوى الصعوبة",
+    "description": "الوصف (اختياري)",
+    "descriptionPlaceholder": "وصف موجز للوصفة…",
+    "prep": "وقت التحضير (دقيقة)",
+    "prepPlaceholder": "30",
+    "cook": "وقت الطهي (دقيقة)",
+    "cookPlaceholder": "45",
+    "servings": "عدد الحصص",
+    "servingsPlaceholder": "4",
+    "ingredients": "المكونات (مكوّن واحد في كل سطر)",
+    "ingredientsPlaceholder": "200 غ دقيق\n3 بيضات\n100 غ سكر",
+    "instructions": "طريقة التحضير (خطوة واحدة في كل سطر)",
+    "instructionsPlaceholder": "سخّن الفرن إلى 180 درجة مئوية\nاخلط الدقيق والسكر\nأضف البيض",
+    "tags": "الوسوم (مفصولة بفواصل)",
+    "tagsPlaceholder": "نباتي، سريع، اقتصادي",
+    "image": "رابط الصورة (اختياري)",
+    "imagePlaceholder": "https://…"
+  },
+  "import": {
+    "button": "استيراد من رابط",
+    "title": "استيراد وصفة",
+    "description": "الصق رابط صفحة الوصفة (مثل Marmiton أو 750g أو إحدى المدونات…) وسنملأ النموذج نيابة عنك.",
+    "urlLabel": "رابط صفحة الوصفة",
+    "urlPlaceholder": "https://www.marmiton.org/recettes/…",
+    "submit": "استيراد",
+    "importing": "جارٍ الاستيراد…",
+    "successTitle": "تم استيراد الوصفة",
+    "successDescription": "راجع التفاصيل ثم احفظها.",
+    "errors": {
+      "notFoundTitle": "لم يتم العثور على وصفة",
+      "notFound": "لا تحتوي هذه الصفحة على وصفة قابلة للقراءة.",
+      "fetchTitle": "فشل الاستيراد",
+      "fetch": "تعذّر جلب هذه الصفحة. تحقق من الرابط ثم حاول مجددًا."
+    }
+  },
+  "shopping": {
+    "button": "إضافة إلى قائمة التسوق",
+    "title": "إضافة إلى قائمة التسوق",
+    "description": "اختر مكونات «{{recipe}}» لإضافتها إلى قائمة التسوق.",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل",
+    "submit": "إضافة إلى القائمة",
+    "sending": "جارٍ الإضافة…",
+    "successTitle": "تم تحديث قائمة التسوق",
+    "successDescription_zero": "لم تتم إضافة أي مكوّن إلى قائمتك.",
+    "successDescription_one": "تمت إضافة مكوّن واحد إلى قائمتك.",
+    "successDescription_two": "تمت إضافة مكوّنين إلى قائمتك.",
+    "successDescription_few": "تمت إضافة {{count}} مكونات إلى قائمتك.",
+    "successDescription_many": "تمت إضافة {{count}} مكوّنًا إلى قائمتك.",
+    "successDescription_other": "تمت إضافة {{count}} مكوّن إلى قائمتك.",
+    "duplicates_zero": "لا توجد مكونات مكررة.",
+    "duplicates_one": "كان مكوّن واحد موجودًا بالفعل.",
+    "duplicates_two": "كان مكوّنان موجودين بالفعل.",
+    "duplicates_few": "كانت {{count}} مكونات موجودة بالفعل.",
+    "duplicates_many": "كان {{count}} مكوّنًا موجودًا بالفعل.",
+    "duplicates_other": "كان {{count}} مكوّن موجودًا بالفعل.",
+    "errorTitle": "تعذّرت الإضافة",
+    "error": "تعذّرت إضافة هذه المكونات. يرجى المحاولة مجددًا.",
+    "original": "الوصفة: {{line}}",
+    "selectedCount": "تم تحديد {{count}} من أصل {{total}}"
+  },
+  "refine": {
+    "button": "تحسين بالذكاء الاصطناعي",
+    "hint": "رتّب العنوان والمكونات والتعليمات باستخدام الذكاء الاصطناعي المُعدّ",
+    "refining": "جارٍ التحسين…",
+    "successTitle": "تم تحسين الوصفة",
+    "successDescription": "أُعيد تنظيم الأقسام والخطوات. راجعها ثم احفظها.",
+    "notConfiguredTitle": "الذكاء الاصطناعي غير مُعدّ",
+    "notConfigured": "فعّل المساعد الذكي واضبطه من الإعدادات → المساعد الذكي.",
+    "errorTitle": "فشل التحسين",
+    "error": "لم يستجب المساعد الذكي. تحقق من إعداداته ثم حاول مجددًا.",
+    "cost": "{{total}} رمزًا ({{in}} إدخال / {{out}} إخراج)"
+  },
+  "detail": {
+    "prep": "التحضير:",
+    "cook": "الطهي:",
+    "servings": "الحصص:",
+    "minUnit": "دقيقة",
+    "ingredients": "المكونات",
+    "instructions": "طريقة التحضير"
+  },
+  "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه الوصفة؟",
+  "errors": {
+    "load": "تعذّر تحميل الوصفات.",
+    "save": "تعذّر حفظ هذه الوصفة.",
+    "delete": "تعذّر حذف هذه الوصفة.",
+    "invalidImage": "رابط الصورة غير صالح. استخدم عنوان ويب يبدأ بـ https:// أو اترك الحقل فارغًا."
+  }
+}

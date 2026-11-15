@@ -1,10 +1,6 @@
 @import './design/tokens.css';
 
-/* Fonts are self-hosted from public/fonts, never fetched from Google. A
-   self-hosted family organizer must not make every household's browser call a
-   third party just to render text — and it also keeps the app working offline
-   and on a LAN with no internet access.
-   Both families are variable fonts, so one file covers the whole weight range. */
+/* Self-hosted fonts keep the app usable offline and on private family servers. */
 @font-face {
   font-family: 'Fraunces';
   font-style: normal;
@@ -35,7 +31,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/fonts/Fraunces-500-italic-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Instrument Sans';
@@ -51,144 +47,67 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/fonts/InstrumentSans-400-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
-  html,
-  body,
-  #root {
-    min-height: 100%;
-  }
-
+  * { @apply border-border; }
+  html, body, #root { min-height: 100%; }
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    /* Prevent long unbreakable strings (emails, URLs, long words) from overflowing their card */
+    writing-mode: horizontal-tb;
+    word-break: normal;
     overflow-wrap: break-word;
-    word-break: break-word;
   }
-
-  /* Media never forces the layout wider than its container on small screens */
-  img,
-  svg,
-  video,
-  canvas {
-    max-width: 100%;
-  }
-
-  /* Titres en serif éditorial (Fraunces) */
-  h1 {
-    @apply text-h1 font-serif;
-  }
-
-  h2 {
-    @apply text-h2 font-serif;
-  }
-
-  :focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
-  }
+  img, svg, video, canvas { max-width: 100%; }
+  h1 { @apply text-h1 font-serif; }
+  h2 { @apply text-h2 font-serif; }
+  :focus-visible { @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background; }
 }
 
+/* RTL layout support: mirror physical positioning utilities used by the
+   existing sidebar, keep text direction inherited, and preserve LTR islands
+   for email addresses, URLs, currency codes and phone numbers. */
+html[dir='rtl'] { direction: rtl; }
+html[dir='rtl'] body { direction: rtl; }
+html[dir='rtl'] .left-0 { left: auto; right: 0; }
+html[dir='rtl'] .right-0 { right: auto; left: 0; }
+html[dir='rtl'] .border-r { border-right-width: 0; border-left-width: 1px; }
+html[dir='rtl'] .border-l { border-left-width: 0; border-right-width: 1px; }
+html[dir='rtl'] .-translate-x-full { --tw-translate-x: 100%; }
+html[dir='rtl'] .translate-x-full { --tw-translate-x: -100%; }
+html[dir='rtl'] .text-left { text-align: right; }
+html[dir='rtl'] .text-right { text-align: left; }
+html[dir='rtl'] input[type='email'],
+html[dir='rtl'] input[type='url'],
+html[dir='rtl'] input[type='tel'],
+html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
+
 @layer components {
-  .card-nexus {
-    @apply rounded-card border border-border bg-card shadow-surface;
-    @apply transition-[box-shadow,border-color,transform] duration-base ease-soft;
-  }
-
-  .card-nexus:hover {
-    @apply border-border-strong shadow-surface-hover;
-  }
-
-  .btn-nexus {
-    @apply inline-flex items-center justify-center gap-2 font-semibold;
-    @apply transition-all duration-fast ease-soft;
-    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
-    @apply disabled:pointer-events-none disabled:opacity-50;
-  }
-
-  .btn-primary {
-    @apply rounded-input bg-primary text-primary-foreground shadow-surface;
-    @apply hover:bg-primary-hover active:scale-[0.98] active:bg-primary-pressed;
-  }
-
-  .btn-secondary {
-    @apply rounded-input border border-border bg-secondary text-secondary-foreground;
-    @apply hover:border-border-strong hover:bg-surface-2;
-    @apply active:scale-[0.98];
-  }
-
-  .btn-ghost {
-    @apply rounded-input text-foreground;
-    @apply hover:bg-surface-2;
-    @apply active:scale-[0.98];
-  }
-
-  .btn-destructive {
-    @apply rounded-input bg-destructive text-destructive-foreground shadow-surface;
-    @apply hover:bg-destructive/90 active:scale-[0.98];
-  }
-
-  .input-nexus {
-    @apply w-full rounded-input border border-input bg-background px-3 text-body;
-    @apply transition-[border-color,box-shadow] duration-fast ease-soft;
-    @apply placeholder:text-muted-foreground;
-    @apply focus-visible:border-border-strong;
-    @apply disabled:cursor-not-allowed disabled:opacity-50;
-    min-height: 44px;
-  }
-
-  .chip-filter {
-    @apply inline-flex items-center gap-2 rounded-pill border border-transparent;
-    @apply bg-surface-2 px-3 py-1.5 text-caption text-foreground;
-    @apply transition-colors duration-fast ease-soft;
-  }
-
-  .chip-filter[data-state='active'] {
-    @apply bg-primary-soft text-primary;
-  }
-
-  .spinner-brand {
-    @apply h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary;
-  }
-
-  .surface-panel {
-    @apply rounded-card border border-border bg-surface;
-  }
+  .card-nexus { @apply rounded-card border border-border bg-card shadow-surface transition-[box-shadow,border-color,transform] duration-base ease-soft; }
+  .card-nexus:hover { @apply border-border-strong shadow-surface-hover; }
+  .btn-nexus { @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-fast ease-soft focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50; }
+  .btn-primary { @apply rounded-input bg-primary text-primary-foreground shadow-surface hover:bg-primary-hover active:scale-[0.98] active:bg-primary-pressed; }
+  .btn-secondary { @apply rounded-input border border-border bg-secondary text-secondary-foreground hover:border-border-strong hover:bg-surface-2 active:scale-[0.98]; }
+  .btn-ghost { @apply rounded-input text-foreground hover:bg-surface-2 active:scale-[0.98]; }
+  .btn-destructive { @apply rounded-input bg-destructive text-destructive-foreground shadow-surface hover:bg-destructive/90 active:scale-[0.98]; }
+  .input-nexus { @apply w-full rounded-input border border-input bg-background px-3 text-body transition-[border-color,box-shadow] duration-fast ease-soft placeholder:text-muted-foreground focus-visible:border-border-strong disabled:cursor-not-allowed disabled:opacity-50; min-height: 44px; }
+  .chip-filter { @apply inline-flex items-center gap-2 rounded-pill border border-transparent bg-surface-2 px-3 py-1.5 text-caption text-foreground transition-colors duration-fast ease-soft; }
+  .chip-filter[data-state='active'] { @apply bg-primary-soft text-primary; }
+  .spinner-brand { @apply h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary; }
+  .surface-panel { @apply rounded-card border border-border bg-surface; }
 }
 
 @layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }

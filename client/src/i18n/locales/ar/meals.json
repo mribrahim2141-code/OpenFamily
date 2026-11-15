@@ -1,0 +1,76 @@
+{
+  "loading": "جارٍ تحميل مخطط الوجبات…",
+  "title": "مخطط الوجبات",
+  "subtitle": "خطّط وجباتك للأسبوع",
+  "thisWeek": "هذا الأسبوع",
+  "weekOf": "أسبوع {{start}} إلى {{end}}",
+  "mealTypes": {
+    "Petit-déjeuner": "الإفطار",
+    "Déjeuner": "الغداء",
+    "Dîner": "العشاء",
+    "Snack": "وجبة خفيفة"
+  },
+  "dialog": {
+    "editTitle": "تعديل وجبة",
+    "addTitle": "إضافة وجبة",
+    "descriptionFmt": "{{type}} — {{date}}"
+  },
+  "form": {
+    "mealType": "نوع الوجبة",
+    "recipe": "الوصفة (اختياري)",
+    "noRecipe": "بدون وصفة",
+    "customMeal": "أو وجبة مخصصة",
+    "customMealPlaceholder": "مثال: بيتزا منزلية",
+    "notes": "ملاحظات (اختياري)",
+    "notesPlaceholder": "ملاحظات إضافية…",
+    "recipeSearch": "البحث عن وصفات…"
+  },
+  "shopping": {
+    "button": "إضافة المكونات إلى قائمة التسوق",
+    "dialogTitle": "إضافة المكونات إلى قائمة التسوق",
+    "dialogDescription": "مكونات الوصفات المخطط لها بين {{start}} و{{end}}. أزل التحديد عن أي مكون لا تحتاجه.",
+    "empty": "لا توجد وجبة مرتبطة بوصفة مخططة لهذا الأسبوع.",
+    "selectedCount": "تم تحديد {{selected}} من أصل {{total}} مكوناً",
+    "alreadyOnList": "موجود بالفعل في القائمة",
+    "confirm_one": "إضافة مكون واحد",
+    "confirm_other": "إضافة {{count}} مكونات",
+    "successTitle": "تمت إضافة المكونات",
+    "successDescription_one": "تمت إضافة عنصر واحد إلى قائمة التسوق.",
+    "successDescription_other": "تمت إضافة {{count}} عناصر إلى قائمة التسوق.",
+    "partialTitle": "تعذّرت إضافة بعض المكونات",
+    "partialDescription": "تمت إضافة {{added}} وتعذّرت إضافة {{failed}}.",
+    "errorTitle": "تعذّرت إضافة المكونات",
+    "errorDescription": "لم تتم إضافة أي شيء إلى قائمة التسوق. يرجى المحاولة مرة أخرى."
+  },
+  "tandoor": {
+    "button": "استيراد من Tandoor",
+    "dialogTitle": "استيراد خطة وجبات Tandoor",
+    "dialogDescription": "الوجبات المخططة في Tandoor من {{start}} إلى {{end}}.",
+    "loading": "جارٍ قراءة خطة وجبات Tandoor…",
+    "empty": "لا توجد وجبات مخططة في Tandoor لهذا الأسبوع.",
+    "error": "تعذّرت قراءة خطة وجبات Tandoor.",
+    "mappingTitle": "مطابقة الوجبات",
+    "mappingHelp": "اختر نوع الوجبة المقابل لكل نوع من وجبات Tandoor في OpenFamily.",
+    "skipType": "عدم الاستيراد",
+    "previewTitle": "معاينة",
+    "replaces": "سيستبدل «{{name}}»",
+    "keeps": "«{{name}}» مخطط بالفعل وسيبقى كما هو",
+    "notImported_one": "لن يتم استيراد وجبة واحدة من Tandoor (نوع غير مطابق).",
+    "notImported_other": "لن يتم استيراد {{count}} وجبات من Tandoor (أنواع غير مطابقة).",
+    "overwrite": "استبدال الوجبات المخططة مسبقاً",
+    "confirm_one": "استيراد وجبة واحدة",
+    "confirm_other": "استيراد {{count}} وجبات",
+    "successTitle": "تم استيراد خطة الوجبات",
+    "successDescription_one": "تم استيراد وجبة واحدة من Tandoor.",
+    "successDescription_other": "تم استيراد {{count}} وجبات من Tandoor.",
+    "keptDescription_one": "تم الإبقاء على وجبة واحدة مخططة مسبقاً.",
+    "keptDescription_other": "تم الإبقاء على {{count}} وجبات مخططة مسبقاً."
+  },
+  "confirmDelete": "هل أنت متأكد من حذف هذه الوجبة؟",
+  "errors": {
+    "loadPlans": "تعذّر تحميل مخطط الوجبات.",
+    "loadRecipes": "تعذّر تحميل الوصفات.",
+    "save": "تعذّر حفظ هذه الوجبة.",
+    "delete": "تعذّر حذف هذه الوجبة."
+  }
+}

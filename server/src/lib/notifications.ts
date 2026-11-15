@@ -15,7 +15,9 @@ export interface CreateNotificationInput {
     url?: string;
 }
 
-export type LocalizedTexts = Record<Language, { title: string; message: string }>;
+export type LocalizedTexts = Partial<Record<Language, { title: string; message: string }>> & {
+    fr: { title: string; message: string };
+};
 
 /**
  * Same as createNotification, with the title and message picked in the
@@ -34,7 +36,9 @@ export async function createLocalizedNotification(
         // Fall back to French; delivery matters more than the language.
     }
     const { texts, ...rest } = input;
-    await createNotification({ ...rest, ...texts[lang] });
+    // Languages added before every notification copy has been translated use
+    // the French fallback rather than producing an undefined notification.
+    await createNotification({ ...rest, ...(texts[lang] ?? texts.fr) });
 }
 
 /**

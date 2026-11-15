@@ -15,7 +15,28 @@ process.env.LOG_LEVEL = 'error';
 // session far from UTC makes any mix-up between local and UTC times fail loudly.
 process.env.PGOPTIONS ??= '-c timezone=Pacific/Kiritimati';
 
-// The suites empty every table between tests: never let them near real data.
-if (!process.env.POSTGRES_DB.endsWith('_test')) {
-    throw new Error(`Refusing to run tests against database "${process.env.POSTGRES_DB}": its name must end with _test.`);
+// Test suites reset tables between cases. Validate the destination before any
+// application/database module is imported so a misconfigured test cannot reach
+// a production or otherwise remote PostgreSQL server.
+const testDatabase = process.env.POSTGRES_DB.trim();
+if (!testDatabase || !testDatabase.endsWith('_test')) {
+    throw new Error('Refusing to run tests: POSTGRES_DB must be a non-empty name ending in "_test".');
 }
+
+const testHost = (process.env.POSTGRES_HOST || 'localhost').trim().toLowerCase();
+const isLoopbackHost = testHost === 'localhost' || testHost === '127.0.0.1' || testHost === '::1';
+if (!isLoopbackHost) {
+    throw new Error(
+        `Refusing to run tests against PostgreSQL host "${testHost}". Only localhost/loopback addresses are allowed.`
+    );
+}
+
+const testPort = Number(process.env.POSTGRES_PORT);
+if (!Number.isInteger(testPort) || testPort < 1 || testPort > 65535) {
+    throw new Error('Refusing to run tests: POSTGRES_PORT must be an integer between 1 and 65535.');
+}
+
+// Use the validated, normalized values for the pool as well as for the checks.
+process.env.POSTGRES_HOST = testHost;
+process.env.POSTGRES_PORT = String(testPort);
+process.env.POSTGRES_DB = testDatabase;

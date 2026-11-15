@@ -1,0 +1,86 @@
+{
+  "title": "التكاملات",
+  "subtitle": "اربط تطبيقاتك المستضافة ذاتيًا لتجميع الوصفات والقوائم والتسوق والتقويم في مكان واحد.",
+  "connected": "متصل",
+  "available": "متاح",
+  "status": {
+    "error": "خطأ",
+    "connected": "متصل"
+  },
+  "lastSync": "تمت المزامنة {{date}}",
+  "syncTitle": "مزامنة",
+  "disconnectTitle": "قطع الاتصال",
+  "confirmDisconnect": "هل تريد قطع اتصال هذا التكامل؟",
+  "modal": {
+    "connect": "الاتصال بـ {{name}}",
+    "test": "اختبار",
+    "testing": "جارٍ الاختبار…",
+    "connecting": "جارٍ الاتصال…",
+    "connectBtn": "اتصال",
+    "encrypted": "تُشفّر بيانات الاعتماد باستخدام AES-256 وتُخزّن على خادمك فقط.",
+    "error": "خطأ"
+  },
+  "syncs": {
+    "recipes": "الوصفات",
+    "menus": "القوائم",
+    "shopping": "قائمة التسوق",
+    "stock": "المخزون",
+    "calendar": "التقويم",
+    "appointments": "المواعيد",
+    "photos": "الصور"
+  },
+  "catalog": {
+    "mealie": {
+      "tagline": "مدير الوصفات",
+      "description": "استورد وصفاتك وقوائمك من نسخة Mealie المستضافة ذاتيًا.",
+      "urlLabel": "رابط الخادم",
+      "urlPlaceholder": "https://mealie.mydomain.com",
+      "keyLabel": "مفتاح API",
+      "keyPlaceholder": "من Mealie > الملف الشخصي > مفاتيح API"
+    },
+    "tandoor": {
+      "tagline": "دفتر الوصفات",
+      "description": "استورد وصفاتك من Tandoor، مدير الوصفات مفتوح المصدر.",
+      "urlLabel": "رابط الخادم",
+      "urlPlaceholder": "https://tandoor.mydomain.com",
+      "keyLabel": "رمز API",
+      "keyPlaceholder": "من Tandoor > الإعدادات > الرموز"
+    },
+    "homeassistant": {
+      "tagline": "المنزل الذكي",
+      "description": "زامن قائمة التسوق مع قائمة Home Assistant.",
+      "urlLabel": "رابط الخادم",
+      "urlPlaceholder": "http://homeassistant.local:8123",
+      "tokenLabel": "رمز طويل الأمد",
+      "tokenPlaceholder": "eyJ… (من الملف الشخصي > الأمان)",
+      "entityLabel": "كيانات المهام (اختياري، مفصولة بفواصل)",
+      "entityPlaceholder": "todo.shopping_list, todo.groceries"
+    },
+    "grocy": {
+      "tagline": "إدارة المنزل",
+      "description": "زامن قائمة التسوق والمخزون مع Grocy.",
+      "urlLabel": "رابط الخادم",
+      "urlPlaceholder": "https://grocy.mydomain.com",
+      "keyLabel": "مفتاح API",
+      "keyPlaceholder": "من Grocy > الإدارة > مفاتيح API"
+    },
+    "nextcloud": {
+      "tagline": "السحابة الشخصية",
+      "description": "استورد أحداث تقويم Nextcloud إلى مواعيدك.",
+      "urlLabel": "رابط Nextcloud",
+      "urlPlaceholder": "https://cloud.mydomain.com",
+      "userLabel": "اسم المستخدم",
+      "userPlaceholder": "your.username",
+      "passwordLabel": "كلمة المرور (أو كلمة مرور التطبيق)",
+      "passwordPlaceholder": "****"
+    },
+    "immich": {
+      "tagline": "مكتبة الصور",
+      "description": "اعرض صورًا عشوائية من مكتبة Immich المستضافة ذاتيًا كخلفية لشاشة العرض.",
+      "urlLabel": "رابط الخادم",
+      "urlPlaceholder": "https://immich.mydomain.com",
+      "keyLabel": "مفتاح API",
+      "keyPlaceholder": "من Immich > إعدادات الحساب > مفاتيح API"
+    }
+  }
+}

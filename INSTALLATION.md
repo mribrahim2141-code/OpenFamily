@@ -160,20 +160,17 @@ The [release notes](https://github.com/NexaFlowFrance/OpenFamily/releases) menti
 
 ## 8. Back up and restore
 
-Everything lives in the PostgreSQL volume. A daily dump is enough:
+Back up the PostgreSQL database **and** the `server/uploads` directory: uploaded
+files are stored outside PostgreSQL. Keep the matching `.env` securely with
+the backups because the same `JWT_SECRET` is needed to decrypt stored
+integration credentials.
 
-```bash
-docker compose exec -T postgres pg_dump -U openfamily -d openfamily -Fc > openfamily-$(date +%F).dump
-```
-
-Restore it into a fresh install (after `docker compose up -d`, before creating any account):
-
-```bash
-docker compose exec -T postgres pg_restore -U openfamily -d openfamily --clean --if-exists < openfamily-2026-09-26.dump
-docker compose restart server
-```
-
-Keep your `.env` with the dumps: without the same `JWT_SECRET`, saved integration passwords and followed calendar addresses cannot be read.
+For the complete backup, isolated restore, and rollback procedure, see
+[`docs/SAFE_TESTING_AND_BACKUP.md`](docs/SAFE_TESTING_AND_BACKUP.md). In
+particular, restore into a newly created database first. Do not use
+`pg_restore --clean` against the current application database as a routine
+recovery step, and do not remove the PostgreSQL volume with `docker compose down -v`
+unless you deliberately intend to delete all data in that volume.
 
 Each family can also download its own data from **Settings → Export data** and import it into another OpenFamily.
 
