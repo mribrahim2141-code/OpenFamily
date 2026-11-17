@@ -28,7 +28,6 @@ const RewardsStore:React.FC=()=>{
  };
  useEffect(()=>{void load()},[]);
  const myMember=useMemo(()=>members.find(m=>m.linked_user_id===user?.id),[members,user?.id]);
- const visibleItems=items.filter(i=>i.is_active&&(!i.member_ids?.length||i.member_ids.includes(myMember?.id||'')));
  const createItem=async(e:React.FormEvent)=>{
   e.preventDefault();setSaving(true);setError('');
   try{await api.post('/api/rewards/catalog',{title,description,emoji,points:Number(points),member_ids:eligible});setTitle('');setDescription('');setEmoji('🎁');setPoints('');setEligible([]);await load()}
