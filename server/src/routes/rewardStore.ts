@@ -24,10 +24,8 @@ const belongs = async (memberId: string, familyId: string) => {
 // Active catalogue. Empty member_ids means available to every family member.
 router.get('/catalog', async (req: AuthRequest, res) => {
     try {
-        const r = await query(`SELECT c.*, COALESCE(array_agg(fm.id) FILTER (WHERE fm.id IS NOT NULL), ARRAY[]::uuid[]) AS eligible_members
-            FROM reward_catalog c LEFT JOIN family_members fm ON fm.user_id=c.user_id AND fm.id=ANY(ARRAY(SELECT jsonb_array_elements_text(c.member_ids)::uuid))
-            WHERE c.user_id=$1 AND (c.is_active=true OR $2=true)
-            GROUP BY c.id ORDER BY c.created_at DESC`, [req.userId, await isParentAccount(req.actualUserId)]);
+        const parent = await isParentAccount(req.actualUserId);
+        const r = await query('SELECT * FROM reward_catalog WHERE user_id=$1 AND (is_active=true OR $2=true) ORDER BY created_at DESC', [req.userId, parent]);
         res.json({ success: true, data: r.rows });
     } catch (e) { console.error('Reward catalog error:', e); res.status(500).json({ success:false,error:'Internal server error' }); }
 });
