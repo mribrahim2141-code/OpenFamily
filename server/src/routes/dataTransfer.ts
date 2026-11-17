@@ -754,7 +754,12 @@ router.post('/import', requireParent, importBodyParser, async (req: AuthRequest,
             return row;
         });
 
-        await importRows('reward_settings', importData.reward_settings);\n        await importRows('reward_catalog', importData.reward_catalog, (row) => {\n            row.member_ids = sanitizeMemberArray(row.member_ids, familyMemberIds);\n            return row;\n        });\n        const rewardCatalogIds = new Set((await client.query('SELECT id FROM reward_catalog WHERE user_id=$1',[userId])).rows.map((row:{id:string})=>row.id));
+        await importRows('reward_settings', importData.reward_settings);
+        await importRows('reward_catalog', importData.reward_catalog, (row) => {
+            row.member_ids = sanitizeMemberArray(row.member_ids, familyMemberIds);
+            return row;
+        });
+        const rewardCatalogIds = new Set((await client.query('SELECT id FROM reward_catalog WHERE user_id=$1',[userId])).rows.map((row:{id:string})=>row.id));
         await importRows('reward_transactions', importData.reward_transactions, (row) => {
             const memberId = sourceId(row.member_id);
             if (!memberId || !familyMemberIds.has(memberId)) return null;
