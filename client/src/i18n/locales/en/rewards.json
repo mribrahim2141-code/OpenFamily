@@ -82,5 +82,37 @@
   "errors": {
     "load": "Unable to load pocket money.",
     "action": "Unable to perform this action."
+  },
+  "store": {
+    "open": "Open rewards store",
+    "title": "Rewards store",
+    "subtitle": "Exchange points for rewards chosen by your family",
+    "back": "Back to points",
+    "points": "points",
+    "add": "Add a new reward",
+    "name": "Reward name",
+    "emoji": "Emoji",
+    "cost": "Cost in points",
+    "description": "Description",
+    "availableTo": "Make this reward available to selected members",
+    "allMembersHint": "Leave everyone unchecked to make it available to the whole family",
+    "create": "Add to store",
+    "catalog": "Available rewards",
+    "empty": "There are no rewards in the store yet",
+    "active": "Available",
+    "disabled": "Disabled",
+    "disable": "Disable",
+    "enable": "Enable",
+    "request": "Request reward",
+    "requestsTitle": "Redemption requests",
+    "myRequests": "My requests",
+    "noRequests": "There are no requests yet",
+    "approve": "Approve and deduct points",
+    "reject": "Reject request",
+    "status": {
+      "pending": "Awaiting approval",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
   }
 }
