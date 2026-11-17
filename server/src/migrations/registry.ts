@@ -275,4 +275,38 @@ export const coreMigrations: readonly Migration[] = [
             'CREATE INDEX idx_worship_daily_logs_user_date ON worship_daily_logs(user_id, log_date DESC)',
         ],
     },
+
+    {
+        // Additive reward catalogue and request history. The existing reward_transactions
+        // table remains the sole points ledger; pending requests reserve points only.
+        id: 'core/0011-reward-store',
+        statements: [
+            `CREATE TABLE reward_catalog (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                title VARCHAR(120) NOT NULL,
+                description TEXT NOT NULL DEFAULT '',
+                emoji VARCHAR(12) NOT NULL DEFAULT '🎁',
+                points_cost INTEGER NOT NULL CHECK (points_cost > 0 AND points_cost <= 1000000),
+                member_ids JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(member_ids) = 'array'),
+                is_active BOOLEAN NOT NULL DEFAULT true,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+            )`,
+            'CREATE INDEX idx_reward_catalog_user_active ON reward_catalog(user_id, is_active, created_at DESC)',
+            `CREATE TABLE reward_redemption_requests (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                member_id UUID NOT NULL REFERENCES family_members(id) ON DELETE CASCADE,
+                reward_id UUID NOT NULL REFERENCES reward_catalog(id) ON DELETE RESTRICT,
+                points_cost INTEGER NOT NULL CHECK (points_cost > 0),
+                status VARCHAR(16) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                decided_at TIMESTAMPTZ
+            )`,
+            'CREATE INDEX idx_reward_redemption_requests_user_status ON reward_redemption_requests(user_id, status, created_at DESC)',
+            "CREATE INDEX idx_reward_redemption_requests_member_pending ON reward_redemption_requests(user_id, member_id) WHERE status = 'pending'",
+        ],
+    },
 ];
