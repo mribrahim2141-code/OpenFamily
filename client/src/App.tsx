@@ -27,6 +27,7 @@ import Join from './pages/Join';
 import Integrations from './pages/Integrations';
 import Worship from './pages/Worship';
 import Education from './pages/Education';
+import GlassSettings from './pages/GlassSettings';
 
 function App() {
     const { isAuthenticated, loading, isModuleEnabled } = useAuth();
@@ -94,6 +95,7 @@ function App() {
                 <Route path="/budget" element={moduleRoute('budget', <Budget />)} />
                 <Route path="/family" element={<Family />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/settings/appearance" element={<GlassSettings />} />
                 <Route path="/integrations" element={moduleRoute('integrations', <Integrations />)} />
                 <Route path="/join" element={<Join />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
