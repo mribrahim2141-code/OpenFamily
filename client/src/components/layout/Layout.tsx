@@ -25,6 +25,7 @@ import {
     PiggyBank,
     MessageSquare,
     Heart,
+    GraduationCap,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/Button';
@@ -43,6 +44,7 @@ const navigation: { labelKey: string; href: string; icon: typeof Home; module?: 
     { labelKey: 'items.shopping', href: '/shopping', icon: ShoppingCart },
     { labelKey: 'items.tasks', href: '/tasks', icon: CheckSquare },
     { labelKey: 'items.worship', href: '/worship', icon: Heart },
+    { labelKey: 'items.education', href: '/education', icon: GraduationCap },
     { labelKey: 'items.posts', href: '/posts', icon: MessageSquare },
     { labelKey: 'items.rewards', href: '/rewards', icon: PiggyBank, module: 'rewards' },
     { labelKey: 'items.calendar', href: '/calendar', icon: CalendarIcon },
