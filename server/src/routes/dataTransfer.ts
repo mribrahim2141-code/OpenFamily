@@ -279,6 +279,7 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             educationRecords,
             rewardCatalog,
             rewardRequests,
+            officialDocuments,
         ] = await Promise.all([
             query(
                 `SELECT currency, disabled_modules, custom_categories, kakeibo_pillars
@@ -348,6 +349,7 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             query('SELECT * FROM education_records WHERE user_id = $1', [userId]),
             query('SELECT * FROM reward_catalog WHERE user_id = $1', [userId]),
             query('SELECT * FROM reward_redemption_requests WHERE user_id = $1', [userId]),
+            query('SELECT * FROM official_documents WHERE user_id = $1', [userId]),
         ]);
 
         const exportData = {
@@ -384,6 +386,7 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             education_records: educationRecords.rows,
             reward_catalog: rewardCatalog.rows,
             reward_redemption_requests: rewardRequests.rows,
+            official_documents: officialDocuments.rows,
         };
 
         return res.json({ success: true, data: exportData });
