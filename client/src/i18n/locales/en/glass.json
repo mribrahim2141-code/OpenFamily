@@ -1,0 +1,67 @@
+{
+  "back": "Back to settings",
+  "title": "Liquid Glass customization",
+  "subtitle": "Tune the app appearance and motion with an instant preview",
+  "confirmReset": "Reset all appearance and motion settings to defaults?",
+  "confirmMotionReset": "Reset motion settings only?",
+  "preview": {
+    "title": "Live preview",
+    "live": "Live updates",
+    "familySpace": "Family space",
+    "cardTitle": "Our happy moments",
+    "cardDesc": "Everything important to your family in one place",
+    "blur": "Blur",
+    "radius": "Radius",
+    "gloss": "Gloss",
+    "syncNote": "The preview responds to every adjustment. Supported effects are applied to the app interface."
+  },
+  "presets": {
+    "title": "Presets",
+    "subtitle": "Choose a starting point, then fine-tune each control",
+    "default": "Default",
+    "readable": "Easy to read",
+    "crystal": "Crystal",
+    "performance": "Performance"
+  },
+  "appearance": {
+    "title": "Glass appearance",
+    "blur": "Blur",
+    "refractionHeight": "Refraction height",
+    "refractionAmount": "Refraction amount",
+    "tint": "Tint",
+    "vibrancy": "Vibrancy",
+    "brightness": "Brightness",
+    "gloss": "Gloss",
+    "radius": "Corner radius",
+    "depth": "Depth effect",
+    "depthDesc": "Add subtle layered shadows and depth",
+    "chromatic": "Chromatic aberration",
+    "chromaticDesc": "Subtle colored edge treatment where supported"
+  },
+  "motion": {
+    "title": "Motion & physics",
+    "normal": "Normal",
+    "performance": "Performance",
+    "spring": "Spring",
+    "bouncy": "Very springy",
+    "try": "Try it",
+    "tryHint": "Press and hold, then release to feel the response",
+    "bounce": "Bounce",
+    "speed": "Speed",
+    "compression": "Compression depth",
+    "haptics": "Release haptics",
+    "hapticsDesc": "Short vibration when trying the button if supported",
+    "pullStretch": "Pull stretch",
+    "longPressInflation": "Long-press inflation"
+  },
+  "compat": {
+    "title": "Compatibility & performance",
+    "description": "Uses the CSS effects available on your device without extra libraries or background processes.",
+    "fallback": "If blur is unsupported, cards use a stable translucent surface that keeps text readable. System reduced-motion preferences are respected.",
+    "storage": "Your preferences are saved locally on this device and do not change family data or the database."
+  },
+  "reset": {
+    "motion": "Reset motion",
+    "all": "Reset to defaults"
+  }
+}
