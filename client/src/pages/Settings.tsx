@@ -20,7 +20,7 @@ interface ImportCounts {
     family_members?: number;
     education_records?: number;
     reward_catalog?: number;
-    reward_redemption_requests?: number;
+    reward_redemption_requests?: number;\n    official_documents?: number;
     tasks?: number;
     recipes?: number;
     meal_plans?: number;

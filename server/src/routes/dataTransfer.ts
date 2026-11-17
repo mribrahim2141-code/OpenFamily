@@ -103,7 +103,7 @@ const IMPORT_COLUMNS: Record<string, ReadonlySet<string>> = {
     ]),
     education_records: new Set(['id','member_id','kind','title','subject','details','due_date','score','max_score','status','created_at','updated_at']),
     reward_catalog: new Set(['id','title','description','emoji','points_cost','member_ids','is_active','created_at','updated_at']),
-    reward_redemption_requests: new Set(['id','member_id','reward_id','points_cost','status','created_at','updated_at','decided_at']),
+    reward_redemption_requests: new Set(['id','member_id','reward_id','points_cost','status','created_at','updated_at','decided_at']),\n    official_documents: new Set(['id','member_id','doc_type','title','issuer','document_number','issue_date','expiry_date','notes','file_name','mime_type','file_size','file_base64','created_at','updated_at']),
     family_posts: new Set([
         'id', 'author_user_id', 'content', 'image_url', 'link_url',
         'created_at', 'updated_at',
@@ -701,7 +701,7 @@ router.post('/import', requireParent, importBodyParser, async (req: AuthRequest,
             return row;
         });
 
-        const familyMemberIds = await loadOwnedIds(client, 'family_members', userId);
+        const familyMemberIds = await loadOwnedIds(client, 'family_members', userId);\n\n        await importRows('official_documents', importData.official_documents, (row) => {\n            const memberId = sourceId(row.member_id);\n            const encoded = typeof row.file_base64 === 'string' ? row.file_base64 : '';\n            const size = Number(row.file_size);\n            const mime = row.mime_type;\n            if (!encoded || encoded.length > 6990508 || !Number.isInteger(size) || size < 1 || size > 5242880\n                || !['application/pdf','image/jpeg','image/png','image/webp'].includes(String(mime))) return null;\n            row.member_id = memberId && familyMemberIds.has(memberId) ? memberId : null;\n            return row;\n        });
 
         await importRows('recipes', importData.recipes, (row) => {
             // Same rule as the recipe routes; an unusable photo is dropped, not the recipe.

@@ -1,0 +1,47 @@
+{
+  "title": "Official documents",
+  "subtitle": "Securely keep important family documents and track their expiry dates.",
+  "add": "Add document",
+  "save": "Save document",
+  "download": "Download",
+  "delete": "Delete",
+  "confirmDelete": "Permanently delete this document?",
+  "empty": "No documents saved yet.",
+  "allFamily": "All family members",
+  "expires": "Expires",
+  "fileHint": "PDF, JPG, PNG or WebP — maximum 5 MB.",
+  "fields": {
+    "title": "Document title",
+    "type": "Document type",
+    "member": "Document owner",
+    "issuer": "Issuing authority",
+    "number": "Document number (optional)",
+    "issue": "Issue date",
+    "expiry": "Expiry date",
+    "file": "File",
+    "notes": "Notes"
+  },
+  "types": {
+    "national_id": "National ID",
+    "passport": "Passport",
+    "residence_permit": "Residence permit",
+    "birth_certificate": "Birth certificate",
+    "medical_insurance": "Medical insurance",
+    "driving_license": "Driving licence",
+    "other": "Other"
+  },
+  "status": {
+    "none": "No expiry date",
+    "expired": "Expired",
+    "soon": "Expires within 30 days",
+    "valid": "Valid"
+  },
+  "errors": {
+    "load": "Could not load documents.",
+    "save": "Could not save the document.",
+    "size": "File exceeds 5 MB.",
+    "read": "Could not read the file.",
+    "download": "Could not download the file.",
+    "delete": "Could not delete the document."
+  }
+}
