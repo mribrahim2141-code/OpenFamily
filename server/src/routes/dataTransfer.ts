@@ -379,7 +379,10 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             recurring_expense_logs: recurringExpenseLogs.rows,
             kakeibo_months: kakeiboMonths.rows,
             family_posts: familyPosts.rows,
-            family_post_seen: familyPostSeen.rows,\n            education_records: educationRecords.rows,\n            reward_catalog: rewardCatalog.rows,\n            reward_redemption_requests: rewardRequests.rows,
+            family_post_seen: familyPostSeen.rows,
+            education_records: educationRecords.rows,
+            reward_catalog: rewardCatalog.rows,
+            reward_redemption_requests: rewardRequests.rows,
         };
 
         return res.json({ success: true, data: exportData });
@@ -763,6 +766,16 @@ router.post('/import', requireParent, importBodyParser, async (req: AuthRequest,
         await importRows('reward_goals', importData.reward_goals, (row) => {
             const memberId = sourceId(row.member_id);
             return memberId && familyMemberIds.has(memberId) ? row : null;
+        });
+
+        await importRows('reward_redemption_requests', importData.reward_redemption_requests, (row) => {
+            const memberId = sourceId(row.member_id), rewardId = sourceId(row.reward_id);
+            return memberId && familyMemberIds.has(memberId) && rewardId && rewardCatalogIds.has(rewardId) ? row : null;
+        });
+        await importRows('education_records', importData.education_records, (row) => {
+            const memberId = sourceId(row.member_id);
+            row.member_id = memberId && familyMemberIds.has(memberId) ? memberId : null;
+            return row;
         });
 
         await importRows('family_notes', importData.family_notes);
