@@ -79,7 +79,7 @@ const RewardsStore:React.FC=()=>{
   </section>
   <section className="space-y-3"><h2 className="text-h2">{isParent?t('store.requestsTitle'):t('store.myRequests')}</h2>
    {requests.length===0?<Card><CardContent className="p-6 text-center text-muted-foreground">{t('store.noRequests')}</CardContent></Card>:<Card><CardContent className="divide-y divide-border p-0">
-    {requests.map(r=><div key={r.id} className="flex flex-wrap items-center gap-3 p-4"><span className="text-2xl">{r.emoji||'🎁'}</span><div className="min-w-0 flex-1"><p className="font-medium">{r.reward_title}</p><p className="text-caption text-muted-foreground">{isParent?r.member_name+' · ':''}{r.points_cost} {t('store.points')}</p></div><Badge variant={r.status==='approved'?'success':r.status==='rejected'?'secondary':'warning'}>{t(`store.status.${r.status}`)}</Badge>
+    {requests.map(r=><div key={r.id} className="flex flex-wrap items-center gap-3 p-4"><span className="text-2xl">{r.emoji||'🎁'}</span><div className="min-w-0 flex-1"><p className="font-medium">{r.reward_title}</p><p className="text-caption text-muted-foreground">{isParent?r.member_name+' · ':''}{r.points_cost} {t('store.points')}</p></div><Badge variant={r.status==='approved'?'primary':r.status==='rejected'?'secondary':'warning'}>{t(`store.status.${r.status}`)}</Badge>
      {isParent&&r.status==='pending'&&<div className="flex gap-2"><Button size="sm" disabled={saving} onClick={()=>void decide(r.id,'approve')}><Check className="mr-1 h-4 w-4"/>{t('store.approve')}</Button><Button size="sm" variant="secondary" disabled={saving} onClick={()=>void decide(r.id,'reject')}><X className="mr-1 h-4 w-4"/>{t('store.reject')}</Button></div>}
     </div>)}
    </CardContent></Card>}
