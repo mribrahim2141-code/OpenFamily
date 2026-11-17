@@ -1,21 +1,21 @@
 import React,{useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ArrowLeft,RotateCcw,Sparkles,Layers,Zap,Eye,SlidersHorizontal,Move,Smartphone,Check,Info} from 'lucide-react';
+import {ArrowLeft,RotateCcw,Sparkles,Layers,Eye,SlidersHorizontal,Move,Smartphone,Check,Info} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import {Button,Card,CardContent} from '../components/ui';
 import {useTheme} from '../contexts/ThemeContext';
 import {DEFAULT_GLASS_SETTINGS,presetGlassSettings,presetMotionSettings,GlassPreset,MotionPreset} from '../design/glassSettings';
 
 const GlassSettingsPage:React.FC=()=>{
- const {t}=useTranslation('glass');const {glassSettings:s,setGlassSettings}=useTheme();const [pressed,setPressed]=useState(false);const [pressTimer,setPressTimer]=useState<number|null>(null);
+ const {t}=useTranslation('glass');const {glassSettings:s,setGlassSettings}=useTheme();const [pressed,setPressed]=useState(false);const [longPressed,setLongPressed]=useState(false);const [pressTimer,setPressTimer]=useState<number|null>(null);
  const update=(key:keyof typeof s,value:number|boolean)=>setGlassSettings({...s,[key]:value});
  const applyPreset=(preset:GlassPreset)=>setGlassSettings(presetGlassSettings(preset,s));
  const applyMotion=(preset:MotionPreset)=>setGlassSettings(presetMotionSettings(preset,s));
  const resetAll=()=>{if(window.confirm(t('confirmReset')))setGlassSettings({...DEFAULT_GLASS_SETTINGS})};
  const resetMotion=()=>{if(window.confirm(t('confirmMotionReset')))setGlassSettings({...DEFAULT_GLASS_SETTINGS,motionPreset:'normal'})};
  const vibrate=()=>{if(s.haptics&&'vibrate'in navigator)navigator.vibrate?.(18)};
- const down=()=>{setPressed(true);vibrate();const id=window.setTimeout(()=>setGlassSettings({...s,longPressInflation:Math.min(100,s.longPressInflation+0)}),450);setPressTimer(id)};
- const up=()=>{setPressed(false);if(pressTimer!==null)window.clearTimeout(pressTimer);setPressTimer(null);vibrate()};
+ const down=()=>{setPressed(true);setLongPressed(false);vibrate();const id=window.setTimeout(()=>setLongPressed(true),450);setPressTimer(id)};
+ const up=()=>{setPressed(false);setLongPressed(false);if(pressTimer!==null)window.clearTimeout(pressTimer);setPressTimer(null);vibrate()};
  const slider=(key:keyof typeof s,label:string,min:number,max:number,unit='')=><label key={String(key)} className="block space-y-2"><span className="flex items-center justify-between gap-3 text-caption"><span>{label}</span><strong className="min-w-12 text-end tabular-nums">{String(s[key])}{unit}</strong></span><input aria-label={label} type="range" dir="ltr" min={min} max={max} step="1" value={Number(s[key])} onChange={e=>update(key,Number(e.target.value))} className="h-2 w-full cursor-pointer accent-primary"/><span className="flex justify-between text-micro text-muted-foreground"><span>{min}{unit}</span><span>{max}{unit}</span></span></label>;
  const toggle=(key:'depth'|'chromatic'|'haptics',label:string,desc:string)=><div className="flex items-center justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 p-3"><div className="min-w-0"><p className="text-caption font-medium">{label}</p><p className="text-micro text-muted-foreground">{desc}</p></div><button type="button" role="switch" aria-checked={s[key]} onClick={()=>update(key,!s[key])} className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${s[key]?'bg-primary':'bg-muted'}`}><span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all ${s[key]?'left-6':'left-1'}`}/></button></div>;
  const presets:[GlassPreset,string][]=[['default',t('presets.default')],['readable',t('presets.readable')],['crystal',t('presets.crystal')],['performance',t('presets.performance')]];
@@ -40,7 +40,7 @@ const GlassSettingsPage:React.FC=()=>{
     {toggle('depth',t('appearance.depth'),t('appearance.depthDesc'))}{toggle('chromatic',t('appearance.chromatic'),t('appearance.chromaticDesc'))}
    </CardContent></Card>
    <div className="space-y-5"><Card><CardContent className="space-y-4 p-5"><h2 className="flex items-center gap-2 text-h2"><Move className="h-5 w-5"/>{t('motion.title')}</h2><div className="grid grid-cols-2 gap-2">{motions.map(([value,label])=><button key={value} onClick={()=>applyMotion(value)} className={`rounded-full border px-3 py-2.5 text-caption transition-colors ${s.motionPreset===value?'border-primary bg-primary-soft text-primary':'border-border hover:bg-surface-2'}`}>{label}</button>)}</div>
-    <div className="flex items-center justify-between rounded-2xl border border-white/20 bg-white/10 p-4"><div><p className="text-caption font-medium">{t('motion.try')}</p><p className="text-micro text-muted-foreground">{t('motion.tryHint')}</p></div><button type="button" onPointerDown={down} onPointerUp={up} onPointerLeave={up} onPointerCancel={up} onClick={vibrate} className={`rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition-transform duration-200 active:scale-90 ${pressed?'scale-90':''}`}>{t('motion.try')}</button></div>
+    <div className="flex items-center justify-between rounded-2xl border border-white/20 bg-white/10 p-4"><div><p className="text-caption font-medium">{t('motion.try')}</p><p className="text-micro text-muted-foreground">{t('motion.tryHint')}</p></div><button type="button" onPointerDown={down} onPointerUp={up} onPointerLeave={up} onPointerCancel={up} onClick={vibrate} style={{transform:pressed?`scale(${1-s.compression/100*.12+(longPressed?s.longPressInflation/100*.08:0)}) translateY(${s.pullStretch/100*-2}px)`:undefined,transitionDuration:`${Math.max(80,3000/s.speed)}ms`,transitionTimingFunction:`cubic-bezier(.2,${.4+s.bounce/250},.2,1)`}} className={`rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition-transform ${pressed?'scale-95':''}`}>{t('motion.try')}</button></div>
     {slider('bounce',t('motion.bounce'),0,100,'%')}{slider('speed',t('motion.speed'),20,100,'%')}{slider('compression',t('motion.compression'),0,100,'%')}{slider('pullStretch',t('motion.pullStretch'),0,100,'%')}{slider('longPressInflation',t('motion.longPressInflation'),0,100,'%')}{toggle('haptics',t('motion.haptics'),t('motion.hapticsDesc'))}
    </CardContent></Card>
    <Card><CardContent className="space-y-3 p-5"><h2 className="flex items-center gap-2 text-h2"><Smartphone className="h-5 w-5"/>{t('compat.title')}</h2><p className="text-caption text-muted-foreground">{t('compat.description')}</p><div className="flex items-start gap-2 rounded-xl bg-primary-soft/60 p-3 text-caption"><Info className="mt-0.5 h-4 w-4 shrink-0"/>{t('compat.fallback')}</div><p className="text-micro text-muted-foreground">{t('compat.storage')}</p></CardContent></Card>
