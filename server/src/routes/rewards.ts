@@ -196,15 +196,31 @@ router.post('/adjust', requireParent, async (req: AuthRequest, res) => {
             return res.status(400).json({ success: false, error: 'Points must be a non-zero integer' });
         }
 
-        const result = await query(
-            `INSERT INTO reward_transactions (user_id, member_id, points, type, note)
-             VALUES ($1, $2, $3, 'adjust', $4) RETURNING *`,
-            [req.userId, member_id, amount, typeof note === 'string' && note.trim() ? note.trim() : null]
-        );
+        const result = await withTransaction(async (tx) => {
+            const member = await tx.query('SELECT id FROM family_members WHERE id=$1 AND user_id=$2 FOR UPDATE', [member_id, req.userId]);
+            if (!member.rows[0]) throw new Error('MEMBER_NOT_FOUND');
+            if (amount < 0) {
+                const available = await tx.query(
+                    `SELECT COALESCE((SELECT SUM(points) FROM reward_transactions WHERE user_id=$1 AND member_id=$2),0)
+                        - COALESCE((SELECT SUM(points_cost) FROM reward_redemption_requests WHERE user_id=$1 AND member_id=$2 AND status='pending'),0) AS balance`,
+                    [req.userId, member_id]
+                );
+                if (Math.abs(amount) > Number(available.rows[0].balance)) throw new Error('NOT_ENOUGH_AVAILABLE_POINTS');
+            }
+            const inserted = await tx.query(
+                `INSERT INTO reward_transactions (user_id, member_id, points, type, note)
+                 VALUES ($1, $2, $3, 'adjust', $4) RETURNING *`,
+                [req.userId, member_id, amount, typeof note === 'string' && note.trim() ? note.trim() : null]
+            );
+            return inserted.rows[0];
+        });
 
         broadcast(req.userId!, { type: 'update', entity: 'rewards', action: 'created' });
         res.json({ success: true, data: result.rows[0] });
     } catch (error) {
+        if (error instanceof Error && error.message === 'NOT_ENOUGH_AVAILABLE_POINTS') {
+            return res.status(400).json({ success: false, error: 'Cannot deduct points reserved for pending rewards' });
+        }
         console.error('Adjust reward points error:', error);
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
