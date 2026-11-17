@@ -171,3 +171,13 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
  background:linear-gradient(180deg,rgba(255,255,255,calc(var(--glass-gloss,.5)*.55)),transparent);
  opacity:calc(.25 + var(--glass-refraction,.35)*.75);
 }
+
+.glass-theme aside.bg-card,.glass-theme nav.bg-card {
+ background-color:rgba(var(--card),calc(.78 + var(--glass-tint,.18)*.16));
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+ .glass-theme aside.bg-card,.glass-theme nav.bg-card {
+  -webkit-backdrop-filter:blur(var(--glass-blur,22px)) saturate(calc(.7 + var(--glass-vibrancy,.72)*.7));
+  backdrop-filter:blur(var(--glass-blur,22px)) saturate(calc(.7 + var(--glass-vibrancy,.72)*.7));
+ }
+}
