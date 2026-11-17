@@ -63,7 +63,7 @@ router.get('/store-requests', async (req: AuthRequest, res) => {
     try {
         const parent = await isParentAccount(req.actualUserId);
         const memberId = parent ? null : await linkedMember(req.userId!, req.actualUserId!);
-        if (!parent && !memberId) return res.status(403).json({success:false,error:'No linked family profile'});
+        if (!parent && !memberId) return res.json({success:true,data:[]});
         const r = await query(`SELECT rr.*, fm.name AS member_name, rc.title AS reward_title, rc.emoji
             FROM reward_redemption_requests rr JOIN family_members fm ON fm.id=rr.member_id
             JOIN reward_catalog rc ON rc.id=rr.reward_id
