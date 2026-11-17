@@ -856,6 +856,27 @@ const Settings: React.FC = () => {
                 </CardContent>
             </Card>
 
+            {/* Liquid Glass customization */}
+            <Card>
+                <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-card bg-primary-soft text-primary">
+                            <Sparkles className="h-5 w-5" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-caption font-semibold text-foreground">{t('settings:appearance.title')}</h3>
+                            <p className="mt-1 text-micro text-muted-foreground">{t('settings:appearance.subtitle')}</p>
+                            <Link to="/settings/appearance">
+                                <Button variant="secondary" size="sm" className="mt-4">
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    {t('settings:appearance.open')}
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
             {/* First day of the week */}
             <RegionalPreferences />
 
