@@ -42,8 +42,12 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         localStorage.setItem('theme', theme);
     }, [theme]);
 
+    useEffect(() => {
+        saveGlassSettings(glassSettings);
+    }, [glassSettings]);
+
     return (
-        <ThemeContext.Provider value={{ theme, setTheme, actualTheme }}>
+        <ThemeContext.Provider value={{ theme, setTheme, actualTheme, glassSettings, setGlassSettings }}>
             {children}
         </ThemeContext.Provider>
     );
