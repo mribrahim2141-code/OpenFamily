@@ -27,7 +27,7 @@ const RewardsStore:React.FC=()=>{
   }catch(e){setError(e instanceof Error?e.message:t('rewards:errors.load'))}finally{setLoading(false)}
  };
  useEffect(()=>{void load()},[]);
- const myMember=useMemo(()=>members.find(m=>m.linked_user_id===user?.id),[members,user?.id]);
+ const myMember=useMemo(()=>{const member=members.find(m=>m.linked_user_id===user?.id);if(!member)return undefined;const reserved=requests.filter(r=>r.member_id===member.id&&r.status==='pending').reduce((sum,r)=>sum+r.points_cost,0);return {...member,balance:member.balance-reserved}},[members,requests,user?.id]);
  const createItem=async(e:React.FormEvent)=>{
   e.preventDefault();setSaving(true);setError('');
   try{const payload={title,description,emoji,points:Number(points),member_ids:eligible,is_active:editingItem?.is_active??true};if(editingItem)await api.put(`/api/rewards/catalog/${editingItem.id}`,payload);else await api.post('/api/rewards/catalog',payload);setEditingItem(null);setTitle('');setDescription('');setEmoji('🎁');setPoints('');setEligible([]);await load()}
