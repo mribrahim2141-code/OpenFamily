@@ -9,7 +9,7 @@ router.use(authMiddleware);
 const uploadParser = express.json({ limit: '8mb' });
 const allowed = new Set(['national_id','passport','residence_permit','birth_certificate','medical_insurance','driving_license','other']);
 const clean = (v: unknown, max: number) => typeof v === 'string' ? v.trim().slice(0, max) : '';
-const dateOnly = (v: unknown) => typeof v === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) ? v : null;
+const dateOnly = (v: unknown) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
 const metadata = (r: any) => ({ id:r.id, member_id:r.member_id, doc_type:r.doc_type, title:r.title, issuer:r.issuer, document_number:r.document_number, issue_date:r.issue_date, expiry_date:r.expiry_date, notes:r.notes, file_name:r.file_name, mime_type:r.mime_type, file_size:r.file_size, created_at:r.created_at });
 function decodeFile(value: unknown, mime: unknown) {
  if (typeof value !== 'string' || value.length > 6990508 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)) return null;
@@ -51,7 +51,7 @@ router.get('/:id/file', async (req: AuthRequest,res) => {
   if(!parent&&!linked?.rows[0])return res.status(403).json({success:false,error:'Forbidden'});
   const result=parent?await query('SELECT file_base64,file_name,mime_type FROM official_documents WHERE id=$1 AND user_id=$2',[req.params.id,req.userId]):await query('SELECT file_base64,file_name,mime_type FROM official_documents WHERE id=$1 AND user_id=$2 AND member_id=$3',[req.params.id,req.userId,linked!.rows[0].id]);
   const row=result.rows[0]; if(!row)return res.status(404).json({success:false,error:'Document not found'});
-  const bytes=Buffer.from(row.file_base64,'base64'); res.setHeader('Content-Type',row.mime_type);res.setHeader('Content-Length',bytes.length);res.setHeader('Content-Disposition',`attachment; filename="${String(row.file_name).replace(/["\\\\\\r\\n]/g,'_')}"`);res.setHeader('X-Content-Type-Options','nosniff');return res.send(bytes);
+  const bytes=Buffer.from(row.file_base64,'base64'); res.setHeader('Content-Type',row.mime_type);res.setHeader('Content-Length',bytes.length);res.setHeader('Content-Disposition',`attachment; filename="${String(row.file_name).replace(/[^a-zA-Z0-9._-]/g,'_')}"`);res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','private, no-store');return res.send(bytes);
  }catch(e){console.error('Document download error:',e);res.status(500).json({success:false,error:'Internal server error'});}
 });
 router.delete('/:id', requireParent, async (req: AuthRequest,res) => {
