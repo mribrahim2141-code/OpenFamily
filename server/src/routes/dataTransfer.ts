@@ -101,6 +101,9 @@ const IMPORT_COLUMNS: Record<string, ReadonlySet<string>> = {
     kakeibo_months: new Set([
         'id', 'month', 'year', 'savings_goal', 'notes', 'created_at', 'updated_at',
     ]),
+    education_records: new Set(['id','member_id','kind','title','subject','details','due_date','score','max_score','status','created_at','updated_at']),
+    reward_catalog: new Set(['id','title','description','emoji','points_cost','member_ids','is_active','created_at','updated_at']),
+    reward_redemption_requests: new Set(['id','member_id','reward_id','points_cost','status','created_at','updated_at','decided_at']),
     family_posts: new Set([
         'id', 'author_user_id', 'content', 'image_url', 'link_url',
         'created_at', 'updated_at',
@@ -114,6 +117,7 @@ const JSONB_COLUMNS: Record<string, ReadonlySet<string>> = {
     recipes: new Set(['ingredients', 'instructions', 'tags']),
     shopping_list_templates: new Set(['items']),
     appointments: new Set(['family_member_ids']),
+    reward_catalog: new Set(['member_ids']),
 };
 
 const FAMILY_SETTINGS_COLUMNS = new Set([
@@ -369,7 +373,7 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             recurring_expense_logs: recurringExpenseLogs.rows,
             kakeibo_months: kakeiboMonths.rows,
             family_posts: familyPosts.rows,
-            family_post_seen: familyPostSeen.rows,
+            family_post_seen: familyPostSeen.rows,\n            education_records: educationRecords.rows,\n            reward_catalog: rewardCatalog.rows,\n            reward_redemption_requests: rewardRequests.rows,
         };
 
         return res.json({ success: true, data: exportData });
@@ -741,7 +745,7 @@ router.post('/import', requireParent, importBodyParser, async (req: AuthRequest,
             return row;
         });
 
-        await importRows('reward_settings', importData.reward_settings);
+        await importRows('reward_settings', importData.reward_settings);\n        await importRows('reward_catalog', importData.reward_catalog, (row) => {\n            row.member_ids = sanitizeMemberArray(row.member_ids, familyMemberIds);\n            return row;\n        });\n        const rewardCatalogIds = new Set((await client.query('SELECT id FROM reward_catalog WHERE user_id=$1',[userId])).rows.map((row:{id:string})=>row.id));
         await importRows('reward_transactions', importData.reward_transactions, (row) => {
             const memberId = sourceId(row.member_id);
             if (!memberId || !familyMemberIds.has(memberId)) return null;
