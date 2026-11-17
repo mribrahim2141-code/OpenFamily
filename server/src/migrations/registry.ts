@@ -240,4 +240,18 @@ export const coreMigrations: readonly Migration[] = [
             'CREATE INDEX idx_oidc_flows_expires_at ON oidc_flows(expires_at)',
         ],
     },
+    {
+        // Add a separate kinship field without changing the legacy role values
+        // used by child-account permissions and reward eligibility.
+        id: 'core/0009-family-relationships',
+        statements: [
+            `ALTER TABLE family_members ADD COLUMN relationship VARCHAR(32)
+             CHECK (relationship IS NULL OR relationship IN (
+                 'father', 'mother', 'husband', 'wife', 'son', 'daughter',
+                 'grandfather', 'grandmother', 'grandson', 'granddaughter',
+                 'brother', 'sister', 'paternal_uncle', 'paternal_aunt',
+                 'maternal_uncle', 'maternal_aunt', 'cousin', 'nephew', 'niece', 'other'
+             ))`,
+        ],
+    },
 ];

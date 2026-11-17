@@ -9,6 +9,12 @@ router.use(authMiddleware);
 
 const DEFAULT_ROLE = 'Autre';
 const DEFAULT_COLOR = '#FF4466';
+const RELATIONSHIP_VALUES = new Set([
+    'father', 'mother', 'husband', 'wife', 'son', 'daughter',
+    'grandfather', 'grandmother', 'grandson', 'granddaughter',
+    'brother', 'sister', 'paternal_uncle', 'paternal_aunt',
+    'maternal_uncle', 'maternal_aunt', 'cousin', 'nephew', 'niece', 'other',
+]);
 
 const isValidHexColor = (value: string) => /^#[0-9a-fA-F]{6}$/.test(value);
 
@@ -64,6 +70,7 @@ const mapFamilyMember = (row: any) => {
         id: row.id,
         name: row.name,
         role: row.role || DEFAULT_ROLE,
+        relationship: row.relationship ?? null,
         color: row.color || DEFAULT_COLOR,
         birthdate: row.birth_date || null,
         allergies: parseStringArray(row.allergies),
@@ -118,6 +125,7 @@ router.post('/', requireParent, async (req: AuthRequest, res) => {
         const {
             name,
             role,
+            relationship,
             birthdate,
             color,
             allergies,
@@ -138,6 +146,10 @@ router.post('/', requireParent, async (req: AuthRequest, res) => {
         }
 
         const roleValue = typeof role === 'string' && role.trim() ? role.trim() : DEFAULT_ROLE;
+        const relationshipValue = typeof relationship === 'string' && relationship.trim() ? relationship.trim() : null;
+        if (relationshipValue && !RELATIONSHIP_VALUES.has(relationshipValue)) {
+            return res.status(400).json({ success: false, error: 'Invalid family relationship' });
+        }
         const birthDateValue = toNullIfEmpty(birthdate);
         const allergiesValue = serializeStringArray(allergies);
         const medicationsValue = serializeStringArray(medications);
@@ -150,6 +162,7 @@ router.post('/', requireParent, async (req: AuthRequest, res) => {
           user_id,
           name,
           role,
+          relationship,
           birth_date,
           color,
           allergies,
@@ -173,12 +186,14 @@ router.post('/', requireParent, async (req: AuthRequest, res) => {
           $10,
           $11,
           $12,
-          $13
+          $13,
+          $14
         ) RETURNING *`,
             [
                 req.userId,
                 cleanedName,
                 roleValue,
+                relationshipValue,
                 birthDateValue,
                 cleanedColor,
                 allergiesValue,
@@ -235,6 +250,14 @@ router.put('/:id', requireParent, async (req: AuthRequest, res) => {
         if (role !== undefined) {
             const roleValue = typeof role === 'string' && role.trim() ? role.trim() : DEFAULT_ROLE;
             pushUpdate('role', roleValue);
+        }
+
+        if (relationship !== undefined) {
+            const relationshipValue = typeof relationship === 'string' && relationship.trim() ? relationship.trim() : null;
+            if (relationshipValue && !RELATIONSHIP_VALUES.has(relationshipValue)) {
+                return res.status(400).json({ success: false, error: 'Invalid family relationship' });
+            }
+            pushUpdate('relationship', relationshipValue);
         }
 
         if (birthdate !== undefined) {

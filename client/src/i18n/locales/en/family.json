@@ -105,7 +105,8 @@
     "contactPhone": "Contact phone",
     "contactPhonePlaceholder": "e.g. +1 555 123 4567",
     "notes": "Notes (optional)",
-    "notesPlaceholder": "Additional notes…"
+    "notesPlaceholder": "Additional notes…",
+    "relationship": "Relationship"
   },
   "confirm": {
     "kick": "Remove this account from the family?",
@@ -126,5 +127,28 @@
     "sendRequest": "Unable to send the request.",
     "approve": "Unable to approve the request.",
     "reject": "Unable to reject the request."
+  },
+  "relationships": {
+    "notSet": "Not specified",
+    "father": "Father",
+    "mother": "Mother",
+    "husband": "Husband",
+    "wife": "Wife",
+    "son": "Son",
+    "daughter": "Daughter",
+    "grandfather": "Grandfather",
+    "grandmother": "Grandmother",
+    "grandson": "Grandson",
+    "granddaughter": "Granddaughter",
+    "brother": "Brother",
+    "sister": "Sister",
+    "paternal_uncle": "Paternal uncle",
+    "paternal_aunt": "Paternal aunt",
+    "maternal_uncle": "Maternal uncle",
+    "maternal_aunt": "Maternal aunt",
+    "cousin": "Cousin",
+    "nephew": "Nephew",
+    "niece": "Niece",
+    "other": "Other relative"
   }
 }

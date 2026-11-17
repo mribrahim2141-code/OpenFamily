@@ -105,7 +105,8 @@
     "contactPhone": "رقم هاتف جهة الاتصال",
     "contactPhonePlaceholder": "مثال: +966 5X XXX XXXX",
     "notes": "ملاحظات (اختياري)",
-    "notesPlaceholder": "ملاحظات إضافية…"
+    "notesPlaceholder": "ملاحظات إضافية…",
+    "relationship": "صلة القرابة"
   },
   "confirm": {
     "kick": "هل تريد إزالة هذا الحساب من العائلة؟",
@@ -126,5 +127,28 @@
     "sendRequest": "تعذّر إرسال الطلب.",
     "approve": "تعذّر قبول الطلب.",
     "reject": "تعذّر رفض الطلب."
+  },
+  "relationships": {
+    "notSet": "غير محددة",
+    "father": "الأب",
+    "mother": "الأم",
+    "husband": "الزوج",
+    "wife": "الزوجة",
+    "son": "الابن",
+    "daughter": "الابنة",
+    "grandfather": "الجد",
+    "grandmother": "الجدة",
+    "grandson": "الحفيد",
+    "granddaughter": "الحفيدة",
+    "brother": "الأخ",
+    "sister": "الأخت",
+    "paternal_uncle": "العم",
+    "paternal_aunt": "العمة",
+    "maternal_uncle": "الخال",
+    "maternal_aunt": "الخالة",
+    "cousin": "ابن/ابنة العم أو الخال",
+    "nephew": "ابن الأخ أو الأخت",
+    "niece": "ابنة الأخ أو الأخت",
+    "other": "صلة قرابة أخرى"
   }
 }

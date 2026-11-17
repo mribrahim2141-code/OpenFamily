@@ -13,6 +13,7 @@ interface FamilyMember {
     id: string;
     name: string;
     role: string;
+    relationship?: string | null;
     color: string;
     birthdate?: string;
     allergies?: string[];
@@ -55,6 +56,12 @@ const Family: React.FC = () => {
         { value: 'Autre', label: t('family:roles.Autre') },
     ];
     const roleLabel = (v: string) => t(`family:roles.${v}`, { defaultValue: v });
+    const relationshipOptions = [
+        'father', 'mother', 'husband', 'wife', 'son', 'daughter',
+        'grandfather', 'grandmother', 'grandson', 'granddaughter',
+        'brother', 'sister', 'paternal_uncle', 'paternal_aunt',
+        'maternal_uncle', 'maternal_aunt', 'cousin', 'nephew', 'niece', 'other',
+    ].map((value) => ({ value, label: t(`family:relationships.${value}`) }));
     const ACCOUNT_ROLES = [
         { value: 'parent', label: t('family:shared.roleParent') },
         { value: 'enfant', label: t('family:shared.roleChild') },
@@ -90,6 +97,7 @@ const Family: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         role: 'Parent',
+        relationship: '',
         color: DEFAULT_FAMILY_COLOR,
         birthdate: '',
         allergies: '',
@@ -354,6 +362,7 @@ const Family: React.FC = () => {
         setFormData({
             name: member.name,
             role: member.role,
+            relationship: member.relationship || '',
             color: member.color,
             birthdate: member.birthdate ? member.birthdate.split('T')[0] : '',
             allergies: member.allergies?.join(', ') || '',
@@ -371,6 +380,7 @@ const Family: React.FC = () => {
         setFormData({
             name: '',
             role: 'Parent',
+            relationship: '',
             color: DEFAULT_FAMILY_COLOR,
             birthdate: '',
             allergies: '',
@@ -446,6 +456,11 @@ const Family: React.FC = () => {
                                         <Badge variant="primary" className="mt-1">
                                             {roleLabel(member.role)}
                                         </Badge>
+                                        {member.relationship && (
+                                            <p className="text-body-sm text-muted-foreground mt-1">
+                                                {t(`family:relationships.${member.relationship}`, { defaultValue: member.relationship })}
+                                            </p>
+                                        )}
                                         {member.birthdate && (
                                             <p className="text-body-sm text-muted-foreground mt-1">
                                                 {t('family:card.age', { count: calculateAge(member.birthdate) })}
@@ -855,6 +870,14 @@ const Family: React.FC = () => {
                                 options={colorOptions}
                             />
                         </div>
+                    </div>
+                    <div>
+                        <label className="block text-label font-medium text-foreground mb-1.5">{t('family:form.relationship')}</label>
+                        <Select
+                            value={formData.relationship}
+                            onValueChange={(value) => setFormData({ ...formData, relationship: value })}
+                            options={[{ value: '', label: t('family:relationships.notSet') }, ...relationshipOptions]}
+                        />
                     </div>
                     <Input
                         label={t('family:form.birthdate')}
