@@ -143,5 +143,10 @@
     "logoutEverywhere": "Sign out of all devices",
     "logoutEverywhereDesc": "Lost a phone, or signed in on a shared computer? This signs you out everywhere, including here.",
     "confirmLogoutEverywhere": "Sign out of all devices, including this one?"
+  },
+  "appearance": {
+    "title": "Liquid Glass appearance",
+    "subtitle": "Advanced control of blur, gloss and motion",
+    "open": "Open appearance settings"
   }
 }
