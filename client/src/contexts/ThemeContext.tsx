@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { GlassSettings, readGlassSettings, saveGlassSettings } from '../design/glassSettings';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -6,6 +7,8 @@ interface ThemeContextType {
     theme: Theme;
     setTheme: (theme: Theme) => void;
     actualTheme: 'light' | 'dark';
+    glassSettings: GlassSettings;
+    setGlassSettings: (settings: GlassSettings) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -17,6 +20,8 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
 
     const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
+    const [glassSettings, setGlassSettingsState] = useState<GlassSettings>(() => readGlassSettings());
+    const setGlassSettings = (settings: GlassSettings) => setGlassSettingsState(saveGlassSettings(settings));
 
     useEffect(() => {
         const root = window.document.documentElement;
