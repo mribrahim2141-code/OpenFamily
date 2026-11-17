@@ -89,7 +89,10 @@
     "recurring_expense_logs": "سجلات المصروفات المتكررة",
     "kakeibo_months": "أشهر كاكيبو",
     "family_posts": "منشورات العائلة",
-    "family_post_seen": "حالة قراءة المنشور"
+    "family_post_seen": "حالة قراءة المنشور",
+    "education_records": "السجلات التعليمية",
+    "reward_catalog": "كتالوج المكافآت",
+    "reward_redemption_requests": "طلبات استبدال المكافآت"
   },
   "errors": {
     "notif": "حدث خطأ أثناء إعداد الإشعارات.",
