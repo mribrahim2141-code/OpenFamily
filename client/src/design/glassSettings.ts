@@ -45,7 +45,7 @@ export function saveGlassSettings(settings:GlassSettings){
 }
 export function presetGlassSettings(preset:GlassPreset,current:GlassSettings):GlassSettings{
  const presets:Record<GlassPreset,Partial<GlassSettings>>={
-  default:{...DEFAULT_GLASS_SETTINGS},
+  default:{blur:22,refractionHeight:18,refractionAmount:35,tint:18,vibrancy:72,brightness:108,gloss:58,radius:28,depth:true,chromatic:false},
   readable:{blur:8,refractionHeight:8,refractionAmount:10,tint:30,vibrancy:45,brightness:112,gloss:20,radius:22,depth:false,chromatic:false},
   crystal:{blur:30,refractionHeight:30,refractionAmount:75,tint:12,vibrancy:92,brightness:116,gloss:88,radius:32,depth:true,chromatic:true},
   performance:{blur:4,refractionHeight:0,refractionAmount:0,tint:10,vibrancy:45,brightness:105,gloss:12,radius:20,depth:false,chromatic:false,motionPreset:'performance',speed:85,bounce:10}
