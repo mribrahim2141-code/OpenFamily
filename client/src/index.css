@@ -111,3 +111,48 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
+
+/* Optional Liquid Glass layer: progressive enhancement with a light fallback. */
+.glass-theme body {
+  background:
+    radial-gradient(ellipse at 8% 8%, rgba(139,92,246,.16), transparent 38%),
+    radial-gradient(ellipse at 92% 12%, rgba(59,130,246,.14), transparent 36%),
+    radial-gradient(ellipse at 78% 88%, rgba(236,72,153,.12), transparent 38%),
+    rgb(var(--background));
+  background-attachment: fixed;
+}
+.glass-theme .card-nexus,
+.glass-theme .glass-surface {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--glass-radius, 28px);
+  border-color: rgba(255,255,255,calc(.12 + var(--glass-gloss, .5)*.22));
+  background-color: rgba(var(--card),calc(.72 + var(--glass-tint, .18)*.18));
+  background-image: linear-gradient(145deg,rgba(255,255,255,calc(var(--glass-gloss, .5)*.13)),transparent 48%);
+  box-shadow: 0 10px 34px rgba(31,24,56,calc(var(--glass-shadow, 1)*.08)),inset 0 1px 0 rgba(255,255,255,calc(var(--glass-gloss, .5)*.45));
+  transition: transform var(--glass-speed,220ms) cubic-bezier(.2,.8,.2,1),box-shadow var(--glass-speed,220ms) ease,border-color 180ms ease;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+ .glass-theme .card-nexus,.glass-theme .glass-surface {
+   -webkit-backdrop-filter: blur(var(--glass-blur,22px)) saturate(calc(.7 + var(--glass-vibrancy,.72)*.7)) brightness(var(--glass-brightness,1.08));
+   backdrop-filter: blur(var(--glass-blur,22px)) saturate(calc(.7 + var(--glass-vibrancy,.72)*.7)) brightness(var(--glass-brightness,1.08));
+ }
+}
+.glass-theme .card-nexus::before,.glass-theme .glass-surface::before {
+ content:"";position:absolute;inset:0 0 auto;height:var(--glass-refraction-height,18px);pointer-events:none;
+ background:linear-gradient(180deg,rgba(255,255,255,calc(var(--glass-gloss,.58)*.32)),transparent);
+ opacity:calc(.3 + var(--glass-refraction, .35)*.7);
+}
+.glass-theme [data-glass-interactive="true"]:active {
+ transform:scale(calc(1 - var(--glass-compression,.35)*.035)) translateY(calc(var(--glass-pull, .3)*-1px));
+}
+.glass-theme[data-motion-preset="performance"] .card-nexus,
+.glass-theme[data-motion-preset="performance"] .glass-surface {transition-duration:120ms}
+.glass-theme[data-glass-preset="performance"] .card-nexus,
+.glass-theme[data-glass-preset="performance"] .glass-surface {box-shadow:0 2px 10px rgba(20,20,40,.05)}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+ .glass-theme .card-nexus,.glass-theme .glass-surface {background-color:rgba(var(--card),.96)}
+}
+@media (prefers-reduced-motion: reduce) {
+ .glass-theme .card-nexus,.glass-theme .glass-surface {transition:none;transform:none}
+}
