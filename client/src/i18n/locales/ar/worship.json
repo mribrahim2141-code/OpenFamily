@@ -1,0 +1,35 @@
+{
+  "eyebrow": "عبادة وطمأنينة",
+  "title": "متابعة العبادات",
+  "subtitle": "تابع إنجازك اليومي برفق، واجعل الاستمرار أهم من الكمال.",
+  "progress": "{{completed}} من {{total}} · {{percent}}٪",
+  "previousDay": "اليوم السابق",
+  "nextDay": "اليوم التالي",
+  "date": "التاريخ",
+  "today": "اليوم",
+  "prayersTitle": "الصلوات الخمس",
+  "prayers": {
+    "fajr": "الفجر",
+    "dhuhr": "الظهر",
+    "asr": "العصر",
+    "maghrib": "المغرب",
+    "isha": "العشاء"
+  },
+  "quranTitle": "القرآن الكريم",
+  "quranPages": "عدد صفحات القراءة",
+  "quranHint": "سجّل عدد الصفحات التي قرأتها اليوم.",
+  "dailyActsTitle": "أذكار ونوافل",
+  "morningAdhkar": "أذكار الصباح",
+  "eveningAdhkar": "أذكار المساء",
+  "duha": "صلاة الضحى",
+  "fasting": "صيام تطوع",
+  "notesTitle": "ملاحظات اليوم",
+  "notesPlaceholder": "اكتب وردك أو ما تريد تذكره…",
+  "calendarReminder": "إضافة تذكير عبر التقويم",
+  "saved": "تم الحفظ",
+  "autoSave": "يُحفظ تلقائياً",
+  "errors": {
+    "load": "تعذّر تحميل سجل العبادات.",
+    "save": "تعذّر حفظ سجل العبادات."
+  }
+}
