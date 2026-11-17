@@ -1,7 +1,7 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {Gift,Plus,Check,X,Star,Store,Loader2,ArrowLeft} from 'lucide-react';
+import {Gift,Plus,Check,X,Star,Store,Loader2,ArrowLeft,Pencil} from 'lucide-react';
 import {Card,CardContent,Button,Input,Badge} from '../components/ui';
 import {api} from '../lib/api';
 import {useAuth} from '../contexts/AuthContext';
@@ -14,7 +14,7 @@ const RewardsStore:React.FC=()=>{
  const isParent=Boolean(user?.is_owner)||user?.role!=='enfant';
  const [members,setMembers]=useState<Member[]>([]);const [items,setItems]=useState<Item[]>([]);const [requests,setRequests]=useState<Request[]>([]);
  const [loading,setLoading]=useState(true);const [saving,setSaving]=useState(false);const [error,setError]=useState('');
- const [title,setTitle]=useState('');const [description,setDescription]=useState('');const [emoji,setEmoji]=useState('🎁');const [points,setPoints]=useState('');const [eligible,setEligible]=useState<string[]>([]);
+ const [editingItem,setEditingItem]=useState<Item|null>(null);const [title,setTitle]=useState('');const [description,setDescription]=useState('');const [emoji,setEmoji]=useState('🎁');const [points,setPoints]=useState('');const [eligible,setEligible]=useState<string[]>([]);
  const load=async()=>{
   setLoading(true);setError('');
   try{
@@ -30,7 +30,7 @@ const RewardsStore:React.FC=()=>{
  const myMember=useMemo(()=>members.find(m=>m.linked_user_id===user?.id),[members,user?.id]);
  const createItem=async(e:React.FormEvent)=>{
   e.preventDefault();setSaving(true);setError('');
-  try{await api.post('/api/rewards/catalog',{title,description,emoji,points:Number(points),member_ids:eligible});setTitle('');setDescription('');setEmoji('🎁');setPoints('');setEligible([]);await load()}
+  try{const payload={title,description,emoji,points:Number(points),member_ids:eligible,is_active:editingItem?.is_active??true};if(editingItem)await api.put(`/api/rewards/catalog/${editingItem.id}`,payload);else await api.post('/api/rewards/catalog',payload);setEditingItem(null);setTitle('');setDescription('');setEmoji('🎁');setPoints('');setEligible([]);await load()}
   catch(e){setError(e instanceof Error?e.message:t('rewards:errors.action'))}finally{setSaving(false)}
  };
  const requestItem=async(item:Item)=>{
@@ -56,13 +56,13 @@ const RewardsStore:React.FC=()=>{
   </div>
   {error&&<div role="alert" className="rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-caption text-danger">{error}</div>}
   {isParent&&<Card><CardContent className="space-y-4 p-5">
-   <h2 className="flex items-center gap-2 text-h2"><Plus className="h-5 w-5"/>{t('store.add')}</h2>
+   <h2 className="flex items-center gap-2 text-h2"><Plus className="h-5 w-5"/>{editingItem?t('store.edit'):t('store.add')}</h2>
    <form onSubmit={createItem} className="grid gap-3 sm:grid-cols-2">
     <Input label={t('store.name')} value={title} onChange={e=>setTitle(e.target.value)} maxLength={120} required/>
     <div className="grid grid-cols-[84px_1fr] gap-2"><Input label={t('store.emoji')} value={emoji} onChange={e=>setEmoji(e.target.value)} maxLength={8}/><Input label={t('store.cost')} type="number" min="1" max="1000000" step="1" value={points} onChange={e=>setPoints(e.target.value)} required/></div>
     <div className="sm:col-span-2"><label className="mb-1 block text-caption font-medium">{t('store.description')}</label><textarea className="min-h-20 w-full rounded-input border border-border bg-background px-3 py-2 text-body" value={description} onChange={e=>setDescription(e.target.value)} maxLength={1000}/></div>
     <div className="sm:col-span-2 space-y-2"><p className="text-caption font-medium">{t('store.availableTo')}</p><div className="flex flex-wrap gap-3">{members.map(m=><label key={m.id} className="flex items-center gap-2 text-caption"><input type="checkbox" checked={eligible.includes(m.id)} onChange={e=>setEligible(old=>e.target.checked?[...old,m.id]:old.filter(id=>id!==m.id))}/>{m.name}</label>)}</div><p className="text-micro text-muted-foreground">{t('store.allMembersHint')}</p></div>
-    <div className="sm:col-span-2"><Button type="submit" disabled={saving||!title.trim()||!(Number(points)>0)}><Plus className="mr-2 h-4 w-4"/>{t('store.create')}</Button></div>
+    <div className="sm:col-span-2"><div className="flex flex-wrap gap-2"><Button type="submit" disabled={saving||!title.trim()||!(Number(points)>0)}><Plus className="mr-2 h-4 w-4"/>{editingItem?t('store.save'):t('store.create')}</Button>{editingItem&&<Button type="button" variant="secondary" onClick={()=>{setEditingItem(null);setTitle('');setDescription('');setEmoji('🎁');setPoints('');setEligible([])}}>{t('store.cancelEdit')}</Button>}</div></div>
    </form>
   </CardContent></Card>}
   <section className="space-y-3"><h2 className="text-h2">{t('store.catalog')}</h2>
@@ -71,7 +71,7 @@ const RewardsStore:React.FC=()=>{
      <div className="flex items-start justify-between"><span className="text-4xl" aria-hidden="true">{item.emoji||'🎁'}</span><Badge variant={item.is_active?'primary':'secondary'}>{item.is_active?t('store.active'):t('store.disabled')}</Badge></div>
      <div className="flex-1"><h3 className="text-body font-semibold">{item.title}</h3><p className="mt-1 text-caption text-muted-foreground">{item.description}</p></div>
      <div className="flex items-center justify-between gap-2"><span className="flex items-center gap-1 font-semibold text-amber-600"><Star className="h-4 w-4 fill-current"/>{item.points_cost} {t('store.points')}</span>
-      {isParent?<Button size="sm" variant="secondary" disabled={saving} onClick={()=>void toggleItem(item)}>{item.is_active?t('store.disable'):t('store.enable')}</Button>:<Button size="sm" disabled={saving||!myMember||myMember.balance<item.points_cost||requests.some(r=>r.reward_id===item.id&&r.status==='pending')} onClick={()=>void requestItem(item)}><Gift className="mr-1 h-4 w-4"/>{t('store.request')}</Button>}
+      {isParent?<div className="flex gap-2"><Button size="sm" variant="ghost" disabled={saving} onClick={()=>{setEditingItem(item);setTitle(item.title);setDescription(item.description||'');setEmoji(item.emoji||'🎁');setPoints(String(item.points_cost));setEligible(item.member_ids||[]);window.scrollTo({top:0,behavior:'smooth'})}}><Pencil className="mr-1 h-4 w-4"/>{t('store.edit')}</Button><Button size="sm" variant="secondary" disabled={saving} onClick={()=>void toggleItem(item)}>{item.is_active?t('store.disable'):t('store.enable')}</Button></div>:<Button size="sm" disabled={saving||!myMember||myMember.balance<item.points_cost||requests.some(r=>r.reward_id===item.id&&r.status==='pending')} onClick={()=>void requestItem(item)}><Gift className="mr-1 h-4 w-4"/>{t('store.request')}</Button>}
      </div>
     </CardContent></Card>)}
    </div>}
