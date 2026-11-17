@@ -165,3 +165,9 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
 @media (prefers-reduced-motion: reduce) {
  .glass-theme button:active:not([role="switch"]) {transform:none}
 }
+
+.glass-preview-card::before {
+ content:"";position:absolute;inset:0 0 auto;height:var(--glass-refraction-height,18px);pointer-events:none;
+ background:linear-gradient(180deg,rgba(255,255,255,calc(var(--glass-gloss,.5)*.55)),transparent);
+ opacity:calc(.25 + var(--glass-refraction,.35)*.75);
+}
