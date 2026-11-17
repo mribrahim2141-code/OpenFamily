@@ -600,6 +600,9 @@ const Rewards: React.FC = () => {
                 <div>
                     <h1 className="text-h1 mb-1">{t('rewards:title')}</h1>
                     <p className="text-muted-foreground text-body">{t('rewards:subtitle')}</p>
+                    <Link to="/rewards/store" className="mt-3 inline-flex items-center gap-2 rounded-input bg-primary px-4 py-2 text-caption font-semibold text-primary-foreground hover:bg-primary/90">
+                        <PiggyBank className="h-4 w-4" />{t('rewards:store.open')}
+                    </Link>
                 </div>
                 {isParent && (
                     <Button variant="secondary" onClick={() => {
