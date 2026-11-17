@@ -24,6 +24,7 @@ import Family from './pages/Family';
 import Settings from './pages/Settings';
 import Join from './pages/Join';
 import Integrations from './pages/Integrations';
+import Worship from './pages/Worship';
 
 function App() {
     const { isAuthenticated, loading, isModuleEnabled } = useAuth();
@@ -79,6 +80,7 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/shopping" element={<ShoppingList />} />
                 <Route path="/tasks" element={<Tasks />} />
+                <Route path="/worship" element={<Worship />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/rewards" element={moduleRoute('rewards', <Rewards />)} />
                 <Route path="/calendar" element={<Calendar />} />
