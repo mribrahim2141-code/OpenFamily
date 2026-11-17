@@ -1,6 +1,6 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BookOpen,Plus,Trash2,CalendarDays,GraduationCap,ClipboardList,Loader2,CheckCircle2,Clock3,Edit2} from 'lucide-react';
+import {BookOpen,Plus,Trash2,CalendarDays,GraduationCap,ClipboardList,Loader2,Edit2} from 'lucide-react';
 import {api} from '../lib/api';
 import {useAuth} from '../contexts/AuthContext';
 import {useWebSocketUpdates} from '../hooks/useWebSocketUpdates';
