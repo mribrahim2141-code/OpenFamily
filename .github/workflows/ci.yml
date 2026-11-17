@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/openfamily-4.0-development]
   pull_request:
-    branches: [main]
+    branches: [main, feat/openfamily-4.0-development]
 
 permissions:
   contents: read
