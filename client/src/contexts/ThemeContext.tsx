@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { GlassSettings, readGlassSettings, saveGlassSettings } from '../design/glassSettings';
+import { GlassSettings, readGlassSettings, normalizeGlassSettings, applyGlassSettings, saveGlassSettings } from '../design/glassSettings';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -20,7 +20,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
     const [glassSettings, setGlassSettingsState] = useState<GlassSettings>(() => readGlassSettings());
-    const setGlassSettings = (settings: GlassSettings) => setGlassSettingsState(saveGlassSettings(settings));
+    const setGlassSettings = (settings: GlassSettings) => setGlassSettingsState(normalizeGlassSettings(settings));
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -42,7 +42,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, [theme]);
 
     useEffect(() => {
-        saveGlassSettings(glassSettings);
+        applyGlassSettings(glassSettings);
+        const timeout = window.setTimeout(() => saveGlassSettings(glassSettings), 180);
+        return () => window.clearTimeout(timeout);
     }, [glassSettings]);
 
     return (
