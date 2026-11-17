@@ -275,6 +275,9 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
             kakeiboMonths,
             familyPosts,
             familyPostSeen,
+            educationRecords,
+            rewardCatalog,
+            rewardRequests,
         ] = await Promise.all([
             query(
                 `SELECT currency, disabled_modules, custom_categories, kakeibo_pillars
@@ -341,6 +344,9 @@ router.get('/export', requireParent, async (req: AuthRequest, res) => {
                  WHERE fp.user_id = $1`,
                 [userId]
             ),
+            query('SELECT * FROM education_records WHERE user_id = $1', [userId]),
+            query('SELECT * FROM reward_catalog WHERE user_id = $1', [userId]),
+            query('SELECT * FROM reward_redemption_requests WHERE user_id = $1', [userId]),
         ]);
 
         const exportData = {
