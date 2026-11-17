@@ -8,7 +8,8 @@ import userSettingsRoutes from './routes/userSettings';
 import shoppingRoutes from './routes/shopping';
 import tasksRoutes from './routes/tasks';
 import worshipRoutes from './routes/worship';
-import educationRoutes from './routes/education';\nimport documentsRoutes from './routes/documents';
+import educationRoutes from './routes/education';
+import documentsRoutes from './routes/documents';
 import appointmentsRoutes from './routes/appointments';
 import recipesRoutes from './routes/recipes';
 import mealPlansRoutes from './routes/mealPlans';
@@ -121,7 +122,7 @@ app.use('/api/posts', express.json({ limit: '3mb' }));
 // the server buffer and parse a body of that size.
 const defaultJsonParser = express.json({ limit: '1mb' });
 app.use((req, res, next) => (
-    req.path.replace(/\/+$/, '').toLowerCase() === '/api/data/import'
+    ['/api/data/import', '/api/documents'].includes(req.path.replace(/\/+$/, '').toLowerCase())
         ? next()
         : defaultJsonParser(req, res, next)
 ));
@@ -195,7 +196,8 @@ app.use('/api/auth', userSettingsRoutes);
 app.use('/api/shopping', shoppingRoutes);
 app.use('/api/tasks', tasksRoutes);
 app.use('/api/worship', worshipRoutes);
-app.use('/api/education', educationRoutes);\napp.use('/api/documents', documentsRoutes);
+app.use('/api/education', educationRoutes);
+app.use('/api/documents', documentsRoutes);
 app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/recipes', recipesRoutes);
 app.use('/api/meal-plans', mealPlansRoutes);

@@ -92,7 +92,8 @@
     "family_post_seen": "حالة قراءة المنشور",
     "education_records": "السجلات التعليمية",
     "reward_catalog": "كتالوج المكافآت",
-    "reward_redemption_requests": "طلبات استبدال المكافآت"
+    "reward_redemption_requests": "طلبات استبدال المكافآت",
+    "official_documents": "الوثائق الرسمية"
   },
   "errors": {
     "notif": "حدث خطأ أثناء إعداد الإشعارات.",

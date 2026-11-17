@@ -1,18 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { FileText, Upload, Download, Trash2, Loader2, ShieldCheck, AlertTriangle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { FileText, Upload, Download, Trash2, Loader2, ShieldCheck } from 'lucide-react';
 import { api } from '../lib/api';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../components/ui/button';
-import { Card, CardContent } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Select } from '../components/ui/select';
-import { Textarea } from '../components/ui/textarea';
+import { Button, Card, CardContent, Input, Select, Textarea } from '../components/ui';
 import { useAuth } from '../contexts/AuthContext';
 
 type Doc={id:string;member_id:string|null;doc_type:string;title:string;issuer:string;document_number:string;issue_date:string|null;expiry_date:string|null;notes:string;file_name:string;mime_type:string;file_size:number};
 const kinds=['national_id','passport','residence_permit','birth_certificate','medical_insurance','driving_license','other'];
 export default function Documents(){
- const {t}=useTranslation(['documents','common']); const {user}=useAuth(); const isParent=(user as any)?.role==='parent';
+ const {t}=useTranslation(['documents','common']); const {user}=useAuth(); const isParent=Boolean(user?.is_owner)||user?.role!=='enfant';
  const [items,setItems]=useState<Doc[]>([]),[members,setMembers]=useState<any[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const [title,setTitle]=useState(''),[kind,setKind]=useState('national_id'),[member,setMember]=useState(''),[issuer,setIssuer]=useState(''),[number,setNumber]=useState(''),[issue,setIssue]=useState(''),[expiry,setExpiry]=useState(''),[notes,setNotes]=useState(''),[file,setFile]=useState<File|null>(null);
  const load=async()=>{try{const r=await api.get<any>('/api/documents');setItems(r.data||[]);if(isParent){const m=await api.get<any>('/api/family');setMembers(m.data||[]);}}catch(e){setError(e instanceof Error?e.message:t('documents:errors.load'));}};

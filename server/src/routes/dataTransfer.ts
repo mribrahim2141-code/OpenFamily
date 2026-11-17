@@ -103,7 +103,8 @@ const IMPORT_COLUMNS: Record<string, ReadonlySet<string>> = {
     ]),
     education_records: new Set(['id','member_id','kind','title','subject','details','due_date','score','max_score','status','created_at','updated_at']),
     reward_catalog: new Set(['id','title','description','emoji','points_cost','member_ids','is_active','created_at','updated_at']),
-    reward_redemption_requests: new Set(['id','member_id','reward_id','points_cost','status','created_at','updated_at','decided_at']),\n    official_documents: new Set(['id','member_id','doc_type','title','issuer','document_number','issue_date','expiry_date','notes','file_name','mime_type','file_size','file_base64','created_at','updated_at']),
+    reward_redemption_requests: new Set(['id','member_id','reward_id','points_cost','status','created_at','updated_at','decided_at']),
+    official_documents: new Set(['id','member_id','doc_type','title','issuer','document_number','issue_date','expiry_date','notes','file_name','mime_type','file_size','file_base64','created_at','updated_at']),
     family_posts: new Set([
         'id', 'author_user_id', 'content', 'image_url', 'link_url',
         'created_at', 'updated_at',
@@ -701,7 +702,25 @@ router.post('/import', requireParent, importBodyParser, async (req: AuthRequest,
             return row;
         });
 
-        const familyMemberIds = await loadOwnedIds(client, 'family_members', userId);\n\n        await importRows('official_documents', importData.official_documents, (row) => {\n            const memberId = sourceId(row.member_id);\n            const encoded = typeof row.file_base64 === 'string' ? row.file_base64 : '';\n            const size = Number(row.file_size);\n            const mime = row.mime_type;\n            if (!encoded || encoded.length > 6990508 || !Number.isInteger(size) || size < 1 || size > 5242880\n                || !['application/pdf','image/jpeg','image/png','image/webp'].includes(String(mime))) return null;\n            row.member_id = memberId && familyMemberIds.has(memberId) ? memberId : null;\n            return row;\n        });
+        const familyMemberIds = await loadOwnedIds(client, 'family_members', userId);
+
+        await importRows('official_documents', importData.official_documents, (row) => {
+            const memberId = sourceId(row.member_id);
+            const encoded = typeof row.file_base64 === 'string' ? row.file_base64 : '';
+            const size = Number(row.file_size);
+            const mime = row.mime_type;
+            if (!encoded || encoded.length > 6990508 || !Number.isInteger(size) || size < 1 || size > 5242880
+                || !['application/pdf','image/jpeg','image/png','image/webp'].includes(String(mime))
+                || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) return null;
+            const bytes = Buffer.from(encoded, 'base64');
+            const valid = mime === 'application/pdf' ? bytes.subarray(0,5).toString() === '%PDF-'
+                : mime === 'image/jpeg' ? bytes[0]===255 && bytes[1]===216 && bytes[2]===255
+                : mime === 'image/png' ? bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))
+                : bytes.subarray(0,4).toString()==='RIFF' && bytes.subarray(8,12).toString()==='WEBP';
+            if (!valid || bytes.length !== size) return null;
+            row.member_id = memberId && familyMemberIds.has(memberId) ? memberId : null;
+            return row;
+        });
 
         await importRows('recipes', importData.recipes, (row) => {
             // Same rule as the recipe routes; an unusable photo is dropped, not the recipe.

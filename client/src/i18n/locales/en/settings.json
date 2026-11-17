@@ -92,7 +92,8 @@
     "family_post_seen": "Post read status",
     "education_records": "Education records",
     "reward_catalog": "Reward catalogue",
-    "reward_redemption_requests": "Reward redemption requests"
+    "reward_redemption_requests": "Reward redemption requests",
+    "official_documents": "Official documents"
   },
   "errors": {
     "notif": "Error while configuring notifications.",

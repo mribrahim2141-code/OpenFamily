@@ -26,7 +26,8 @@ import Settings from './pages/Settings';
 import Join from './pages/Join';
 import Integrations from './pages/Integrations';
 import Worship from './pages/Worship';
-import Education from './pages/Education';\nimport Documents from './pages/Documents';
+import Education from './pages/Education';
+import Documents from './pages/Documents';
 import GlassSettings from './pages/GlassSettings';
 
 function App() {
@@ -84,7 +85,8 @@ function App() {
                 <Route path="/shopping" element={<ShoppingList />} />
                 <Route path="/tasks" element={<Tasks />} />
                 <Route path="/worship" element={<Worship />} />
-                <Route path="/education" element={<Education />} />\n                <Route path="/documents" element={<Documents />} />
+                <Route path="/education" element={<Education />} />
+                <Route path="/documents" element={<Documents />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/rewards" element={moduleRoute('rewards', <Rewards />)} />
                 <Route path="/rewards/store" element={moduleRoute('rewards', <RewardsStore />)} />

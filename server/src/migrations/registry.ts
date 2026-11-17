@@ -333,4 +333,30 @@ export const coreMigrations: readonly Migration[] = [
             'CREATE INDEX idx_education_records_member ON education_records(member_id, due_date)',
         ],
     },
+    {
+        id: 'core/0013-official-documents',
+        statements: [
+            `CREATE TABLE official_documents (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                member_id UUID REFERENCES family_members(id) ON DELETE SET NULL,
+                doc_type VARCHAR(32) NOT NULL CHECK (doc_type IN ('national_id','passport','residence_permit','birth_certificate','medical_insurance','driving_license','other')),
+                title VARCHAR(160) NOT NULL,
+                issuer VARCHAR(160) NOT NULL DEFAULT '',
+                document_number VARCHAR(100) NOT NULL DEFAULT '',
+                issue_date DATE,
+                expiry_date DATE,
+                notes TEXT NOT NULL DEFAULT '',
+                file_name VARCHAR(180) NOT NULL,
+                mime_type VARCHAR(80) NOT NULL CHECK (mime_type IN ('application/pdf','image/jpeg','image/png','image/webp')),
+                file_size INTEGER NOT NULL CHECK (file_size BETWEEN 1 AND 5242880),
+                file_base64 TEXT NOT NULL,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+            )`,
+            'CREATE INDEX idx_official_documents_user_expiry ON official_documents(user_id, expiry_date)',
+            'CREATE INDEX idx_official_documents_member ON official_documents(member_id)',
+        ],
+    },
+
 ];
