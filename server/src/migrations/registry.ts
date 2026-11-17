@@ -254,4 +254,25 @@ export const coreMigrations: readonly Migration[] = [
              ))`,
         ],
     },
+    {
+        id: 'core/0010-worship-daily-log',
+        statements: [
+            `CREATE TABLE worship_daily_logs (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                log_date DATE NOT NULL,
+                prayers JSONB NOT NULL DEFAULT '{"fajr":false,"dhuhr":false,"asr":false,"maghrib":false,"isha":false}'::jsonb,
+                quran_pages INTEGER NOT NULL DEFAULT 0 CHECK (quran_pages BETWEEN 0 AND 1000),
+                morning_adhkar BOOLEAN NOT NULL DEFAULT false,
+                evening_adhkar BOOLEAN NOT NULL DEFAULT false,
+                duha BOOLEAN NOT NULL DEFAULT false,
+                fasting BOOLEAN NOT NULL DEFAULT false,
+                notes TEXT,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                UNIQUE (user_id, log_date)
+            )`,
+            'CREATE INDEX idx_worship_daily_logs_user_date ON worship_daily_logs(user_id, log_date DESC)',
+        ],
+    },
 ];
