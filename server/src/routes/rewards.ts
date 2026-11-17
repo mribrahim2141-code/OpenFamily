@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { query } from '../db';
+import { query, withTransaction } from '../db';
 import { authMiddleware, AuthRequest, isParentAccount, requireParent } from '../middleware/auth';
 import { broadcast } from '../lib/broadcaster';
 
@@ -224,24 +224,32 @@ router.post('/redeem', requireParent, async (req: AuthRequest, res) => {
             return res.status(400).json({ success: false, error: 'Points must be a positive integer' });
         }
 
-        const balanceResult = await query(
-            'SELECT COALESCE(SUM(points), 0) AS balance FROM reward_transactions WHERE user_id = $1 AND member_id = $2',
-            [req.userId, member_id]
-        );
-        const balance = parseInt(balanceResult.rows[0].balance, 10) || 0;
-        if (amount > balance) {
-            return res.status(400).json({ success: false, error: 'Not enough points' });
-        }
-
-        const result = await query(
-            `INSERT INTO reward_transactions (user_id, member_id, points, type, note)
-             VALUES ($1, $2, $3, 'redeem', $4) RETURNING *`,
-            [req.userId, member_id, -amount, typeof note === 'string' && note.trim() ? note.trim() : null]
-        );
+        const result = await withTransaction(async (tx) => {
+            // Use the same member-row lock as store requests so a payout cannot
+            // spend points that are currently reserved by pending redemptions.
+            const member = await tx.query('SELECT id FROM family_members WHERE id=$1 AND user_id=$2 FOR UPDATE', [member_id, req.userId]);
+            if (!member.rows[0]) throw new Error('MEMBER_NOT_FOUND');
+            const balanceResult = await tx.query(
+                `SELECT COALESCE((SELECT SUM(points) FROM reward_transactions WHERE user_id=$1 AND member_id=$2),0)
+                    - COALESCE((SELECT SUM(points_cost) FROM reward_redemption_requests WHERE user_id=$1 AND member_id=$2 AND status='pending'),0) AS balance`,
+                [req.userId, member_id]
+            );
+            const balance = parseInt(balanceResult.rows[0].balance, 10) || 0;
+            if (amount > balance) throw new Error('NOT_ENOUGH_AVAILABLE_POINTS');
+            const inserted = await tx.query(
+                `INSERT INTO reward_transactions (user_id, member_id, points, type, note)
+                 VALUES ($1, $2, $3, 'redeem', $4) RETURNING *`,
+                [req.userId, member_id, -amount, typeof note === 'string' && note.trim() ? note.trim() : null]
+            );
+            return inserted.rows[0];
+        });
 
         broadcast(req.userId!, { type: 'update', entity: 'rewards', action: 'created' });
-        res.json({ success: true, data: result.rows[0] });
+        res.json({ success: true, data: result });
     } catch (error) {
+        if (error instanceof Error && error.message === 'NOT_ENOUGH_AVAILABLE_POINTS') {
+            return res.status(400).json({ success: false, error: 'Not enough available points (some are reserved for pending rewards)' });
+        }
         console.error('Redeem reward points error:', error);
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
