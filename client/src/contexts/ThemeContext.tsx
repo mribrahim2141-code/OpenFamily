@@ -7,11 +7,10 @@ interface ThemeContextType {
     theme: Theme;
     setTheme: (theme: Theme) => void;
     actualTheme: 'light' | 'dark';
-    glassSettings: GlassSettings;
-    setGlassSettings: (settings: GlassSettings) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const GlassSettingsContext = createContext<{glassSettings:GlassSettings;setGlassSettings:(settings:GlassSettings)=>void}|undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [theme, setTheme] = useState<Theme>(() => {
@@ -47,8 +46,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, [glassSettings]);
 
     return (
-        <ThemeContext.Provider value={{ theme, setTheme, actualTheme, glassSettings, setGlassSettings }}>
-            {children}
+        <ThemeContext.Provider value={{ theme, setTheme, actualTheme }}>
+            <GlassSettingsContext.Provider value={{glassSettings,setGlassSettings}}>
+                {children}
+            </GlassSettingsContext.Provider>
         </ThemeContext.Provider>
     );
 };
@@ -58,5 +59,11 @@ export const useTheme = () => {
     if (context === undefined) {
         throw new Error('useTheme must be used within a ThemeProvider');
     }
+    return context;
+};
+
+export const useGlassSettings = () => {
+    const context = useContext(GlassSettingsContext);
+    if (context === undefined) throw new Error('useGlassSettings must be used within a ThemeProvider');
     return context;
 };
