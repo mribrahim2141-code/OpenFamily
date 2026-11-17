@@ -1,0 +1,45 @@
+{
+  "title": "Education tracker",
+  "subtitle": "Organize homework, exams, grades and learning progress for each family member",
+  "loading": "Loading education records…",
+  "add": "Add record",
+  "edit": "Edit record",
+  "delete": "Delete",
+  "score": "Score",
+  "allMembers": "All family members",
+  "empty": "No education records yet",
+  "emptyHint": "Add homework, an exam or a grade to start tracking",
+  "confirmDelete": "Delete this education record?",
+  "stats": {
+    "homework": "Open homework",
+    "exams": "Upcoming exams",
+    "grades": "Grade records"
+  },
+  "kinds": {
+    "homework": "Homework",
+    "exam": "Exam",
+    "grade": "Grade",
+    "note": "Note"
+  },
+  "statuses": {
+    "planned": "Planned",
+    "in_progress": "In progress",
+    "completed": "Completed"
+  },
+  "fields": {
+    "title": "Title",
+    "kind": "Record type",
+    "member": "Family member",
+    "subject": "Subject",
+    "dueDate": "Date",
+    "status": "Status",
+    "score": "Score earned",
+    "maxScore": "Maximum score",
+    "details": "Details and notes"
+  },
+  "errors": {
+    "load": "Could not load education records",
+    "save": "Could not save the record",
+    "delete": "Could not delete the record"
+  }
+}
