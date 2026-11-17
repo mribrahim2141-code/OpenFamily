@@ -89,7 +89,10 @@
     "recurring_expense_logs": "Recurring expense checks",
     "kakeibo_months": "Kakeibo months",
     "family_posts": "Family posts",
-    "family_post_seen": "Post read status"
+    "family_post_seen": "Post read status",
+    "education_records": "Education records",
+    "reward_catalog": "Reward catalogue",
+    "reward_redemption_requests": "Reward redemption requests"
   },
   "errors": {
     "notif": "Error while configuring notifications.",
