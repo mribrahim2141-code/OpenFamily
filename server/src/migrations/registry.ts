@@ -309,4 +309,28 @@ export const coreMigrations: readonly Migration[] = [
             "CREATE INDEX idx_reward_redemption_requests_member_pending ON reward_redemption_requests(user_id, member_id) WHERE status = 'pending'",
         ],
     },
+
+    {
+        id: 'core/0012-education-records',
+        statements: [
+            `CREATE TABLE education_records (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                member_id UUID REFERENCES family_members(id) ON DELETE SET NULL,
+                kind VARCHAR(20) NOT NULL CHECK (kind IN ('homework','exam','grade','note')),
+                title VARCHAR(160) NOT NULL,
+                subject VARCHAR(100) NOT NULL DEFAULT '',
+                details TEXT NOT NULL DEFAULT '',
+                due_date DATE,
+                score NUMERIC(8,2) CHECK (score IS NULL OR score >= 0),
+                max_score NUMERIC(8,2) CHECK (max_score IS NULL OR max_score > 0),
+                status VARCHAR(20) NOT NULL DEFAULT 'planned' CHECK (status IN ('planned','in_progress','completed')),
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                CHECK (score IS NULL OR max_score IS NULL OR score <= max_score)
+            )`,
+            'CREATE INDEX idx_education_records_user_date ON education_records(user_id, due_date, created_at DESC)',
+            'CREATE INDEX idx_education_records_member ON education_records(member_id, due_date)',
+        ],
+    },
 ];
