@@ -113,6 +113,7 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
 }
 
 /* Optional Liquid Glass layer: progressive enhancement with a light fallback. */
+.glass-theme .min-h-screen.bg-background { background-color: transparent; }
 .glass-theme body {
   background:
     radial-gradient(ellipse at 8% 8%, rgba(139,92,246,.16), transparent 38%),
@@ -129,7 +130,7 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
   border-color: rgba(255,255,255,calc(.12 + var(--glass-gloss, .5)*.22));
   background-color: rgba(var(--card),calc(.72 + var(--glass-tint, .18)*.18));
   background-image: linear-gradient(145deg,rgba(255,255,255,calc(var(--glass-gloss, .5)*.13)),transparent 48%);
-  box-shadow: 0 10px 34px rgba(31,24,56,calc(var(--glass-shadow, 1)*.08)),inset 0 1px 0 rgba(255,255,255,calc(var(--glass-gloss, .5)*.45));
+  box-shadow: 0 10px 34px rgba(31,24,56,calc(var(--glass-shadow, 1)*.08)),inset 0 1px 0 rgba(255,255,255,calc(var(--glass-gloss, .5)*.45)),1px 0 rgba(40,190,255,calc(var(--glass-chromatic,0)*.16)),-1px 0 rgba(255,60,180,calc(var(--glass-chromatic,0)*.16));
   transition: transform var(--glass-speed,220ms) cubic-bezier(.2,.8,.2,1),box-shadow var(--glass-speed,220ms) ease,border-color 180ms ease;
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -155,4 +156,12 @@ html[dir='rtl'] [dir='ltr'] { direction: ltr; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) {
  .glass-theme .card-nexus,.glass-theme .glass-surface {transition:none;transform:none}
+}
+
+.glass-theme button:active:not([role="switch"]) {
+ transform:scale(calc(1 - var(--glass-compression,.35)*.035)) translateY(calc(var(--glass-pull,.3)*-1px));
+ transition-duration:var(--glass-speed,220ms);
+}
+@media (prefers-reduced-motion: reduce) {
+ .glass-theme button:active:not([role="switch"]) {transform:none}
 }
