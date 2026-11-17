@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Worship & serenity",
+  "title": "Worship tracker",
+  "subtitle": "Reflect on your daily practice gently. Consistency matters more than perfection.",
+  "progress": "{{completed}} of {{total}} · {{percent}}%",
+  "previousDay": "Previous day",
+  "nextDay": "Next day",
+  "date": "Date",
+  "today": "Today",
+  "prayersTitle": "The five daily prayers",
+  "prayers": {
+    "fajr": "Fajr",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha"
+  },
+  "quranTitle": "Qur'an",
+  "quranPages": "Pages read",
+  "quranHint": "Record how many pages you read today.",
+  "dailyActsTitle": "Adhkar & voluntary acts",
+  "morningAdhkar": "Morning adhkar",
+  "eveningAdhkar": "Evening adhkar",
+  "duha": "Duha prayer",
+  "fasting": "Voluntary fasting",
+  "notesTitle": "Daily notes",
+  "notesPlaceholder": "Write your daily portion or a note to remember…",
+  "calendarReminder": "Add a calendar reminder",
+  "saved": "Saved",
+  "autoSave": "Saved automatically",
+  "errors": {
+    "load": "Could not load the worship log.",
+    "save": "Could not save the worship log."
+  }
+}
