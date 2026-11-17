@@ -18,6 +18,9 @@ interface ImportCounts {
     family_settings?: number;
     account_preferences?: number;
     family_members?: number;
+    education_records?: number;
+    reward_catalog?: number;
+    reward_redemption_requests?: number;
     tasks?: number;
     recipes?: number;
     meal_plans?: number;
