@@ -1,0 +1,51 @@
+import React,{useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {ArrowLeft,RotateCcw,Sparkles,Layers,Zap,Eye,SlidersHorizontal,Move,Smartphone,Check,Info} from 'lucide-react';
+import {Link} from 'react-router-dom';
+import {Button,Card,CardContent} from '../components/ui';
+import {useTheme} from '../contexts/ThemeContext';
+import {DEFAULT_GLASS_SETTINGS,presetGlassSettings,presetMotionSettings,GlassPreset,MotionPreset} from '../design/glassSettings';
+
+const GlassSettingsPage:React.FC=()=>{
+ const {t}=useTranslation('glass');const {glassSettings:s,setGlassSettings}=useTheme();const [pressed,setPressed]=useState(false);const [pressTimer,setPressTimer]=useState<number|null>(null);
+ const update=(key:keyof typeof s,value:number|boolean)=>setGlassSettings({...s,[key]:value});
+ const applyPreset=(preset:GlassPreset)=>setGlassSettings(presetGlassSettings(preset,s));
+ const applyMotion=(preset:MotionPreset)=>setGlassSettings(presetMotionSettings(preset,s));
+ const resetAll=()=>{if(window.confirm(t('confirmReset')))setGlassSettings({...DEFAULT_GLASS_SETTINGS})};
+ const resetMotion=()=>{if(window.confirm(t('confirmMotionReset')))setGlassSettings({...DEFAULT_GLASS_SETTINGS,motionPreset:'normal'})};
+ const vibrate=()=>{if(s.haptics&&'vibrate'in navigator)navigator.vibrate?.(18)};
+ const down=()=>{setPressed(true);vibrate();const id=window.setTimeout(()=>setGlassSettings({...s,longPressInflation:Math.min(100,s.longPressInflation+0)}),450);setPressTimer(id)};
+ const up=()=>{setPressed(false);if(pressTimer!==null)window.clearTimeout(pressTimer);setPressTimer(null);vibrate()};
+ const slider=(key:keyof typeof s,label:string,min:number,max:number,unit='')=><label key={String(key)} className="block space-y-2"><span className="flex items-center justify-between gap-3 text-caption"><span>{label}</span><strong className="min-w-12 text-end tabular-nums">{String(s[key])}{unit}</strong></span><input aria-label={label} type="range" dir="ltr" min={min} max={max} step="1" value={Number(s[key])} onChange={e=>update(key,Number(e.target.value))} className="h-2 w-full cursor-pointer accent-primary"/><span className="flex justify-between text-micro text-muted-foreground"><span>{min}{unit}</span><span>{max}{unit}</span></span></label>;
+ const toggle=(key:'depth'|'chromatic'|'haptics',label:string,desc:string)=><div className="flex items-center justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 p-3"><div className="min-w-0"><p className="text-caption font-medium">{label}</p><p className="text-micro text-muted-foreground">{desc}</p></div><button type="button" role="switch" aria-checked={s[key]} onClick={()=>update(key,!s[key])} className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${s[key]?'bg-primary':'bg-muted'}`}><span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all ${s[key]?'left-6':'left-1'}`}/></button></div>;
+ const presets:[GlassPreset,string][]=[['default',t('presets.default')],['readable',t('presets.readable')],['crystal',t('presets.crystal')],['performance',t('presets.performance')]];
+ const motions:[MotionPreset,string][]=[['normal',t('motion.normal')],['performance',t('motion.performance')],['spring',t('motion.spring')],['bouncy',t('motion.bouncy')]];
+ return <div className="liquid-glass-page mx-auto max-w-5xl space-y-6 pb-8">
+  <div className="flex items-center gap-3"><Link to="/settings" className="rounded-full border border-white/30 bg-white/20 p-2" aria-label={t('back')}><ArrowLeft className="h-5 w-5"/></Link><div><h1 className="flex items-center gap-2 text-h1"><Sparkles className="h-6 w-6 text-primary"/>{t('title')}</h1><p className="text-caption text-muted-foreground">{t('subtitle')}</p></div></div>
+  <div className="glass-surface relative overflow-hidden rounded-[30px] p-5 sm:p-7">
+   <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-violet-400/30 blur-3xl"/><div className="pointer-events-none absolute -bottom-14 -left-10 h-44 w-44 rounded-full bg-pink-400/25 blur-3xl"/>
+   <div className="relative space-y-4"><div className="flex items-center justify-between"><h2 className="flex items-center gap-2 text-h2"><Eye className="h-5 w-5"/>{t('preview.title')}</h2><span className="text-micro text-muted-foreground">{t('preview.live')}</span></div>
+    <div className="glass-preview-card relative overflow-hidden rounded-[var(--glass-radius)] border border-white/50 bg-white/30 p-5 shadow-xl backdrop-blur-xl" style={{filter:`brightness(${s.brightness/100}) saturate(${.7+s.vibrancy/100*.7})`}}>
+     <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-blue-400/40 blur-2xl"/><div className="absolute -bottom-8 left-8 h-24 w-24 rounded-full bg-fuchsia-400/30 blur-2xl"/>
+     <div className="relative flex items-start justify-between gap-4"><div><p className="text-micro font-medium text-slate-600">{t('preview.familySpace')}</p><h3 className="mt-1 text-xl font-bold text-slate-900">{t('preview.cardTitle')}</h3><p className="mt-1 text-caption text-slate-700">{t('preview.cardDesc')}</p></div><span className="rounded-2xl bg-white/50 p-3 text-violet-700"><Layers className="h-6 w-6"/></span></div>
+     <div className="relative mt-5 flex items-center justify-between gap-3"><span className="rounded-full bg-white/50 px-3 py-1 text-micro text-slate-700">{t('preview.blur')} {s.blur}px</span><span className="rounded-full bg-white/50 px-3 py-1 text-micro text-slate-700">{t('preview.radius')} {s.radius}px</span><span className="rounded-full bg-white/50 px-3 py-1 text-micro text-slate-700">{t('preview.gloss')} {s.gloss}%</span></div>
+    </div>
+    <p className="text-micro text-muted-foreground">{t('preview.syncNote')}</p>
+   </div>
+  </div>
+  <Card><CardContent className="space-y-4 p-5"><div><h2 className="text-h2">{t('presets.title')}</h2><p className="text-caption text-muted-foreground">{t('presets.subtitle')}</p></div><div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{presets.map(([value,label])=><button key={value} onClick={()=>applyPreset(value)} className={`rounded-full border px-3 py-3 text-caption font-medium transition-all ${s.preset===value?'border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20':'border-border bg-card hover:bg-surface-2'}`}>{s.preset===value&&<Check className="me-1 inline h-4 w-4"/>}{label}</button>)}</div></CardContent></Card>
+  <div className="grid gap-5 lg:grid-cols-2">
+   <Card><CardContent className="space-y-5 p-5"><h2 className="flex items-center gap-2 text-h2"><SlidersHorizontal className="h-5 w-5"/>{t('appearance.title')}</h2>
+    {slider('blur',t('appearance.blur'),0,40,'px')}{slider('refractionHeight',t('appearance.refractionHeight'),0,40,'px')}{slider('refractionAmount',t('appearance.refractionAmount'),0,100,'%')}{slider('tint',t('appearance.tint'),0,50,'%')}{slider('vibrancy',t('appearance.vibrancy'),0,100,'%')}{slider('brightness',t('appearance.brightness'),70,130,'%')}{slider('gloss',t('appearance.gloss'),0,100,'%')}{slider('radius',t('appearance.radius'),12,36,'px')}
+    {toggle('depth',t('appearance.depth'),t('appearance.depthDesc'))}{toggle('chromatic',t('appearance.chromatic'),t('appearance.chromaticDesc'))}
+   </CardContent></Card>
+   <div className="space-y-5"><Card><CardContent className="space-y-4 p-5"><h2 className="flex items-center gap-2 text-h2"><Move className="h-5 w-5"/>{t('motion.title')}</h2><div className="grid grid-cols-2 gap-2">{motions.map(([value,label])=><button key={value} onClick={()=>applyMotion(value)} className={`rounded-full border px-3 py-2.5 text-caption transition-colors ${s.motionPreset===value?'border-primary bg-primary-soft text-primary':'border-border hover:bg-surface-2'}`}>{label}</button>)}</div>
+    <div className="flex items-center justify-between rounded-2xl border border-white/20 bg-white/10 p-4"><div><p className="text-caption font-medium">{t('motion.try')}</p><p className="text-micro text-muted-foreground">{t('motion.tryHint')}</p></div><button type="button" onPointerDown={down} onPointerUp={up} onPointerLeave={up} onPointerCancel={up} onClick={vibrate} className={`rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition-transform duration-200 active:scale-90 ${pressed?'scale-90':''}`}>{t('motion.try')}</button></div>
+    {slider('bounce',t('motion.bounce'),0,100,'%')}{slider('speed',t('motion.speed'),20,100,'%')}{slider('compression',t('motion.compression'),0,100,'%')}{slider('pullStretch',t('motion.pullStretch'),0,100,'%')}{slider('longPressInflation',t('motion.longPressInflation'),0,100,'%')}{toggle('haptics',t('motion.haptics'),t('motion.hapticsDesc'))}
+   </CardContent></Card>
+   <Card><CardContent className="space-y-3 p-5"><h2 className="flex items-center gap-2 text-h2"><Smartphone className="h-5 w-5"/>{t('compat.title')}</h2><p className="text-caption text-muted-foreground">{t('compat.description')}</p><div className="flex items-start gap-2 rounded-xl bg-primary-soft/60 p-3 text-caption"><Info className="mt-0.5 h-4 w-4 shrink-0"/>{t('compat.fallback')}</div><p className="text-micro text-muted-foreground">{t('compat.storage')}</p></CardContent></Card>
+  </div></div>
+  <div className="flex flex-wrap justify-between gap-3"><Button variant="secondary" onClick={resetMotion}><RotateCcw className="me-2 h-4 w-4"/>{t('reset.motion')}</Button><Button variant="ghost" onClick={resetAll}><RotateCcw className="me-2 h-4 w-4"/>{t('reset.all')}</Button></div>
+ </div>;
+};
+export default GlassSettingsPage;
