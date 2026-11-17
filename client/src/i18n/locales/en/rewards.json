@@ -113,6 +113,9 @@
       "pending": "Awaiting approval",
       "approved": "Approved",
       "rejected": "Rejected"
-    }
+    },
+    "edit": "Edit",
+    "save": "Save changes",
+    "cancelEdit": "Cancel editing"
   }
 }
