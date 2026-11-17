@@ -3,11 +3,11 @@ import {useTranslation} from 'react-i18next';
 import {ArrowLeft,RotateCcw,Sparkles,Layers,Eye,SlidersHorizontal,Move,Smartphone,Check,Info} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import {Button,Card,CardContent} from '../components/ui';
-import {useTheme} from '../contexts/ThemeContext';
+import {useGlassSettings} from '../contexts/ThemeContext';
 import {DEFAULT_GLASS_SETTINGS,presetGlassSettings,presetMotionSettings,GlassPreset,MotionPreset} from '../design/glassSettings';
 
 const GlassSettingsPage:React.FC=()=>{
- const {t}=useTranslation('glass');const {glassSettings:s,setGlassSettings}=useTheme();const [pressed,setPressed]=useState(false);const [longPressed,setLongPressed]=useState(false);const [pressTimer,setPressTimer]=useState<number|null>(null);
+ const {t}=useTranslation('glass');const {glassSettings:s,setGlassSettings}=useGlassSettings();const [pressed,setPressed]=useState(false);const [longPressed,setLongPressed]=useState(false);const [pressTimer,setPressTimer]=useState<number|null>(null);
  const update=(key:keyof typeof s,value:number|boolean)=>setGlassSettings({...s,[key]:value});
  const applyPreset=(preset:GlassPreset)=>setGlassSettings(presetGlassSettings(preset,s));
  const applyMotion=(preset:MotionPreset)=>setGlassSettings(presetMotionSettings(preset,s));
