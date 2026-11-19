@@ -105,6 +105,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const sidebarRef = React.useRef<HTMLElement>(null);
     const sidebarTriggerRef = React.useRef<HTMLButtonElement>(null);
     const sidebarWasOpen = React.useRef(false);
+    const quickActionsRef = React.useRef<HTMLDivElement>(null);
+    const quickActionsTriggerRef = React.useRef<HTMLButtonElement>(null);
+    const quickActionsWasOpen = React.useRef(false);
     const sidebarIsHidden = !sidebarOpen && !isDesktop;
     const [isOffline, setIsOffline] = React.useState(!navigator.onLine);
 
@@ -126,9 +129,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         if (sidebarWasOpen.current) {
             sidebarWasOpen.current = false;
-            if (!isDesktop) sidebarTriggerRef.current?.focus();
+            if (!isDesktop && !quickActionsOpen) sidebarTriggerRef.current?.focus();
         }
-    }, [sidebarOpen, isDesktop]);
+    }, [sidebarOpen, isDesktop, quickActionsOpen]);
 
     React.useEffect(() => {
         if (!sidebarOpen) return;
@@ -162,6 +165,55 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         document.addEventListener('keydown', handleKeyDown);
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [sidebarOpen]);
+
+    React.useEffect(() => {
+        if (quickActionsOpen) {
+            quickActionsWasOpen.current = true;
+            const firstControl = quickActionsRef.current?.querySelector<HTMLElement>(
+                'a[href], button:not([disabled])'
+            );
+            firstControl?.focus();
+            return;
+        }
+
+        if (quickActionsWasOpen.current) {
+            quickActionsWasOpen.current = false;
+            if (!sidebarOpen) quickActionsTriggerRef.current?.focus();
+        }
+    }, [quickActionsOpen, sidebarOpen]);
+
+    React.useEffect(() => {
+        if (!quickActionsOpen) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setQuickActionsOpen(false);
+                return;
+            }
+
+            if (event.key !== 'Tab') return;
+            const focusable = quickActionsRef.current?.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (!focusable?.length) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            const active = document.activeElement;
+
+            if (event.shiftKey && (active === first || !quickActionsRef.current?.contains(active))) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && (active === last || !quickActionsRef.current?.contains(active))) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [quickActionsOpen]);
 
     React.useEffect(() => {
         const goOnline = () => setIsOffline(false);
@@ -397,6 +449,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             <button
+                ref={quickActionsTriggerRef}
                 type="button"
                 onClick={() => {
                     setSidebarOpen(false);
@@ -404,11 +457,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 }}
                 className="fixed bottom-24 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-surface-hover transition-all duration-fast ease-soft hover:bg-primary-hover active:scale-[0.98] md:bottom-6 lg:hidden"
                 aria-label={t('quickActions.title')}
+                aria-expanded={quickActionsOpen}
+                aria-controls="quick-actions-panel"
             >
                 <Plus className="h-6 w-6" />
             </button>
 
             <div
+                ref={quickActionsRef}
+                id="quick-actions-panel"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="quick-actions-title"
+                aria-hidden={!quickActionsOpen}
+                inert={!quickActionsOpen}
                 className={cn(
                     'fixed inset-x-4 bottom-44 z-50 rounded-card border border-border bg-card p-4 shadow-surface-hover md:inset-x-auto md:bottom-24 md:right-4 md:w-72',
                     'transition-all duration-base ease-soft lg:hidden',
@@ -417,7 +479,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         : 'pointer-events-none translate-y-3 opacity-0'
                 )}
             >
-                <p className="mb-3 text-caption font-semibold text-foreground">{t('quickActions.title')}</p>
+                <div className="mb-3 flex items-center justify-between gap-3">
+                    <p id="quick-actions-title" className="text-caption font-semibold text-foreground">
+                        {t('quickActions.title')}
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() => setQuickActionsOpen(false)}
+                        aria-label={tCommon('close')}
+                        className="rounded-input p-2 text-muted-foreground hover:bg-surface-2"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                </div>
                 <div className="grid grid-cols-1 gap-2">
                     {visibleQuickActions.map((action) => {
                         const Icon = action.icon;
