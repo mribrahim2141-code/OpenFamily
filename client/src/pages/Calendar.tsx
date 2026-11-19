@@ -876,6 +876,8 @@ const Calendar: React.FC = () => {
                             return (
                                 <div
                                     key={index}
+                                    role="group"
+                                    aria-label={format(day, 'EEEE, MMMM d, yyyy', { locale: dateLocale() })}
                                     onClick={() => isCurrentMonth && handleCalendarDayClick(day, dayAppointments)}
                                     className={`
                                         min-h-[52px] sm:min-h-[100px] p-1 sm:p-2 border rounded-lg cursor-pointer transition-all
@@ -885,16 +887,27 @@ const Calendar: React.FC = () => {
                                     `}
                                 >
                                     <div className="flex items-center justify-center sm:justify-between mb-1">
-                                        <span
-                                            className={`text-body-sm font-medium ${isTodayDate
-                                                ? 'bg-nexus-blue text-white w-6 h-6 rounded-full flex items-center justify-center'
-                                                : isCurrentMonth
-                                                    ? 'text-foreground'
-                                                    : 'text-muted-foreground'
-                                                }`}
+                                        <button
+                                            type="button"
+                                            disabled={!isCurrentMonth}
+                                            aria-label={`${format(day, 'EEEE, MMMM d, yyyy', { locale: dateLocale() })}. ${t('calendar:dayAction.choiceDescription')}`}
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                                handleCalendarDayClick(day, dayAppointments);
+                                            }}
+                                            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-default"
                                         >
-                                            {format(day, 'd')}
-                                        </span>
+                                            <span
+                                                className={`text-body-sm font-medium ${isTodayDate
+                                                    ? 'bg-nexus-blue text-white w-6 h-6 rounded-full flex items-center justify-center'
+                                                    : isCurrentMonth
+                                                        ? 'text-foreground'
+                                                        : 'text-muted-foreground'
+                                                    }`}
+                                            >
+                                                {format(day, 'd')}
+                                            </span>
+                                        </button>
                                     </div>
                                     {/* On a phone a cell is 50px wide: coloured dots, and a tap
                                         on the day lists its events. */}
@@ -914,13 +927,15 @@ const Calendar: React.FC = () => {
                                     )}
                                     <div className="hidden space-y-1 sm:block">
                                         {dayAppointments.slice(0, 3).map((apt) => (
-                                            <div
+                                            <button
                                                 key={apt.occurrence_id || apt.id}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
+                                                type="button"
+                                                aria-label={`${apt.title}, ${formatTime(apt.start_time)}`}
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
                                                     handleEdit(apt);
                                                 }}
-                                                className="text-[10px] p-1 rounded truncate hover:shadow-sm transition-shadow"
+                                                className="block w-full text-left text-[10px] p-1 rounded truncate hover:shadow-sm transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                                                 style={{
                                                     backgroundColor: `${apt.color || '#DC4A60'}20`,
                                                     borderLeft: `3px solid ${apt.color || '#DC4A60'}`,
@@ -930,7 +945,7 @@ const Calendar: React.FC = () => {
                                                 <div className="text-muted-foreground">
                                                     {formatTime(apt.start_time)}
                                                 </div>
-                                            </div>
+                                            </button>
                                         ))}
                                         {dayAppointments.length > 3 && (
                                             <div className="text-[10px] text-muted-foreground text-center">
