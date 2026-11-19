@@ -89,6 +89,7 @@ const isRouteActive = (pathname: string, href: string) => {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     const location = useLocation();
     const { t } = useTranslation('nav');
+    const { t: tCommon } = useTranslation('common');
     const { user, logout, isModuleEnabled } = useAuth();
     const { setTheme, actualTheme } = useTheme();
 
@@ -98,7 +99,69 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     const visibleQuickActions = quickActions.filter((item) => !item.module || isModuleEnabled(item.module));
     const [sidebarOpen, setSidebarOpen] = React.useState(false);
     const [quickActionsOpen, setQuickActionsOpen] = React.useState(false);
+    const [isDesktop, setIsDesktop] = React.useState(
+        () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
+    );
+    const sidebarRef = React.useRef<HTMLElement>(null);
+    const sidebarTriggerRef = React.useRef<HTMLButtonElement>(null);
+    const sidebarWasOpen = React.useRef(false);
+    const sidebarIsHidden = !sidebarOpen && !isDesktop;
     const [isOffline, setIsOffline] = React.useState(!navigator.onLine);
+
+    React.useEffect(() => {
+        const media = window.matchMedia('(min-width: 1024px)');
+        const updateDesktop = () => setIsDesktop(media.matches);
+        updateDesktop();
+        media.addEventListener('change', updateDesktop);
+        return () => media.removeEventListener('change', updateDesktop);
+    }, []);
+
+    React.useEffect(() => {
+        if (sidebarOpen) {
+            sidebarWasOpen.current = true;
+            const firstLink = sidebarRef.current?.querySelector<HTMLElement>('a[href], button:not([disabled])');
+            firstLink?.focus();
+            return;
+        }
+
+        if (sidebarWasOpen.current) {
+            sidebarWasOpen.current = false;
+            if (!isDesktop) sidebarTriggerRef.current?.focus();
+        }
+    }, [sidebarOpen, isDesktop]);
+
+    React.useEffect(() => {
+        if (!sidebarOpen) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setSidebarOpen(false);
+                return;
+            }
+
+            if (event.key !== 'Tab') return;
+            const focusable = sidebarRef.current?.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (!focusable?.length) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            const active = document.activeElement;
+
+            if (event.shiftKey && (active === first || !sidebarRef.current?.contains(active))) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && (active === last || !sidebarRef.current?.contains(active))) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [sidebarOpen]);
 
     React.useEffect(() => {
         const goOnline = () => setIsOffline(false);
@@ -132,6 +195,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             )}
 
             <aside
+                ref={sidebarRef}
+                aria-label={t('user.openMenu')}
+                aria-hidden={sidebarIsHidden}
+                inert={sidebarIsHidden}
                 className={cn(
                     'fixed left-0 top-0 z-50 h-full w-72 border-r border-border bg-card shadow-surface',
                     'transform transition-transform duration-base ease-soft lg:translate-x-0',
@@ -147,6 +214,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         <button
                             type="button"
                             onClick={() => setSidebarOpen(false)}
+                            aria-label={tCommon('close')}
                             className="rounded-input p-2 text-muted-foreground hover:bg-surface-2 lg:hidden"
                         >
                             <X className="h-5 w-5" />
@@ -271,6 +339,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <div className="container flex h-16 max-w-[1200px] items-center justify-between px-4 lg:px-6">
                         <div className="flex items-center gap-3">
                             <button
+                                ref={sidebarTriggerRef}
                                 type="button"
                                 onClick={() => {
                                     setQuickActionsOpen(false);
